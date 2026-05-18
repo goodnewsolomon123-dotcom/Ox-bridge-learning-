@@ -1,0 +1,1671 @@
+ <!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#6c63ff" id="theme-meta">
+<meta name="description" content="AI-powered learning platform for Nigerian students — WAEC, JAMB, University and more">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ox-Bridge">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="https://via.placeholder.com/180x180/6c63ff/ffffff?text=OB">
+<title>Ox-Bridge • Learn Smarter</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&family=Fredoka+One&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DARK THEME (default)
+   ============================================================ */
+:root {
+  --bg:#0a0a0f; --surface:#13131a; --surface2:#1c1c26;
+  --border:#2a2a3a; --accent:#6c63ff; --accent2:#00e5a0;
+  --danger:#ff4f6a; --warn:#ffb830; --text:#e8e8f0; --muted:#6b6b80;
+  --ng:#008751; --card-shadow:0 4px 20px rgba(0,0,0,.4);
+  --grid-color:rgba(108,99,255,.04);
+}
+
+/* ============================================================
+   LIGHT THEME
+   ============================================================ */
+[data-theme="light"] {
+  --bg:#f0f0f8; --surface:#ffffff; --surface2:#f4f4ff;
+  --border:#ddddf0; --accent:#6c63ff; --accent2:#00a86b;
+  --danger:#e63950; --warn:#e09000; --text:#1a1a2e; --muted:#6666aa;
+  --ng:#006b3c; --card-shadow:0 4px 20px rgba(108,99,255,.12);
+  --grid-color:rgba(108,99,255,.06);
+}
+[data-theme="light"] body {
+  background-image:linear-gradient(var(--grid-color) 1px,transparent 1px),linear-gradient(90deg,var(--grid-color) 1px,transparent 1px);
+}
+[data-theme="light"] .navbar{ box-shadow:0 2px 12px rgba(108,99,255,.08); }
+[data-theme="light"] .card{ box-shadow:var(--card-shadow); }
+[data-theme="light"] .opt{ background:var(--surface2); }
+[data-theme="light"] .chat-msg.ai{ background:rgba(108,99,255,.06); border-color:rgba(108,99,255,.2); color:var(--text); }
+[data-theme="light"] .chat-msg.user{ color:#fff; }
+[data-theme="light"] .mem-card{ background:var(--surface2); }
+[data-theme="light"] .letter-tile{ background:var(--surface2); color:var(--text); }
+[data-theme="light"] .kids-bg{ background:linear-gradient(135deg,#e8e0ff,#d0f0e8); }
+[data-theme="light"] .kids-bg * { color:var(--text) !important; }
+[data-theme="light"] .kids-bg .kids-card p{ color:rgba(0,0,0,.6) !important; }
+[data-theme="light"] #mob-menu{ background:rgba(240,240,248,.98); }
+[data-theme="light"] .mob-btn{ color:var(--text); }
+[data-theme="light"] .skel{ background:linear-gradient(90deg,#eeeeff 25%,#f4f4ff 50%,#eeeeff 75%); background-size:200% 100%; }
+[data-theme="light"] #app-loading{ background:var(--bg); }
+[data-theme="light"] .prof-header{ background:linear-gradient(135deg,rgba(108,99,255,.08),rgba(0,168,107,.05)); }
+[data-theme="light"] .chat-box{ background:rgba(108,99,255,.03); }
+[data-theme="light"] .search-result{ color:var(--text); }
+[data-theme="light"] .tt-cell{ background:var(--surface2); color:var(--text); }
+
+/* THEME TOGGLE BUTTON */
+.theme-toggle{
+  width:38px; height:38px; border-radius:50%; border:1.5px solid var(--border);
+  background:var(--surface2); cursor:pointer; display:flex; align-items:center;
+  justify-content:center; font-size:16px; transition:all .3s; flex-shrink:0;
+}
+.theme-toggle:hover{ border-color:var(--accent); transform:rotate(20deg); }
+
+/* INSTALL BANNER */
+#install-banner{
+  position:fixed; bottom:0; left:0; right:0; z-index:2000;
+  background:linear-gradient(135deg,var(--accent),#5a52e0);
+  color:#fff; padding:14px 20px;
+  display:none; align-items:center; justify-content:space-between; gap:12px;
+  flex-wrap:wrap; animation:slideUp .4s ease;
+}
+@keyframes slideUp{ from{transform:translateY(100%)} to{transform:translateY(0)} }
+#install-banner p{ font-size:13px; font-family:'Syne',sans-serif; }
+.install-btns{ display:flex; gap:8px; }
+
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
+*{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html{ scroll-behavior:smooth; }
+body{
+  font-family:'DM Mono',monospace; background:var(--bg); color:var(--text);
+  overflow-x:hidden; min-height:100vh;
+  background-image:linear-gradient(var(--grid-color) 1px,transparent 1px),linear-gradient(90deg,var(--grid-color) 1px,transparent 1px);
+  background-size:40px 40px; transition:background .3s,color .3s;
+}
+.page{ display:none; min-height:100vh; padding-bottom:80px; }
+.page.active{ display:block; animation:fadeIn .35s ease forwards; }
+@keyframes fadeIn{ from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+@keyframes shake{ 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+@keyframes pulse{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+@keyframes floatP{ 0%{transform:translateY(100vh) scale(.5)} 100%{transform:translateY(-100vh) scale(1.2)} }
+@keyframes shimmer{ 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+@keyframes spin{ to{transform:rotate(360deg)} }
+@keyframes bounce{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@keyframes slideUp{ from{transform:translateY(100%)} to{transform:translateY(0)} }
+
+/* NAVBAR */
+.navbar{
+  position:fixed; top:0; left:0; right:0; height:60px;
+  background:var(--surface); border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 14px; z-index:1000; gap:8px; transition:background .3s;
+}
+.logo{
+  font-family:'Syne',sans-serif; font-weight:800; font-size:20px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  cursor:pointer; white-space:nowrap; flex-shrink:0;
+}
+.nav-links{ display:flex; align-items:center; gap:2px; }
+.nav-link{ font-size:12px; cursor:pointer; padding:6px 8px; border-radius:8px; transition:all .2s; font-family:'Syne',sans-serif; font-weight:600; white-space:nowrap; color:var(--text); }
+.nav-link:hover{ background:var(--surface2); color:var(--accent); }
+.nav-right{ display:flex; align-items:center; gap:6px; flex-shrink:0; }
+.pill{ background:var(--surface2); padding:4px 10px; border-radius:9999px; font-size:12px; display:flex; align-items:center; gap:4px; border:1px solid var(--border); cursor:pointer; white-space:nowrap; color:var(--text); transition:all .2s; }
+.pill:hover{ border-color:var(--accent); }
+.notif-wrap{ position:relative; font-size:20px; cursor:pointer; padding:6px; border-radius:50%; transition:background .2s; }
+.notif-wrap:hover{ background:var(--surface2); }
+.notif-dot{ position:absolute; top:2px; right:2px; background:var(--danger); color:#fff; font-size:9px; width:15px; height:15px; border-radius:50%; display:none; align-items:center; justify-content:center; }
+
+/* BUTTONS */
+.btn{ padding:10px 20px; border-radius:12px; font-weight:600; cursor:pointer; transition:all .3s; border:none; font-family:'Syne',sans-serif; font-size:14px; }
+.btn-primary{ background:var(--accent); color:#fff; }
+.btn-primary:hover{ transform:translateY(-2px); box-shadow:0 10px 20px rgba(108,99,255,.3); }
+.btn-outline{ background:transparent; border:2px solid var(--accent); color:var(--accent); }
+.btn-outline:hover{ background:var(--accent); color:#fff; }
+.btn-danger{ background:var(--danger); color:#fff; }
+.btn-warn{ background:var(--warn); color:#000; }
+.btn-green{ background:var(--accent2); color:#000; }
+.btn:disabled{ opacity:.55; cursor:not-allowed; transform:none!important; }
+
+/* INPUTS */
+.inp{
+  width:100%; padding:13px 15px; background:var(--surface2);
+  border:1px solid var(--border); border-radius:12px; color:var(--text);
+  font-family:'DM Mono',monospace; font-size:14px; outline:none;
+  transition:border-color .2s,background .3s; margin-bottom:13px;
+}
+.inp:focus{ border-color:var(--accent); }
+.inp::placeholder{ color:var(--muted); }
+select.inp option{ background:var(--surface2); color:var(--text); }
+
+/* CARDS */
+.card{ background:var(--surface); border-radius:16px; border:1px solid var(--border); padding:20px; transition:border-color .2s,background .3s,box-shadow .3s; }
+.card-hover:hover{ border-color:rgba(108,99,255,.4); cursor:pointer; box-shadow:var(--card-shadow); }
+
+/* SKELETON */
+.skel{ background:linear-gradient(90deg,var(--surface) 25%,var(--surface2) 50%,var(--surface) 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; border-radius:8px; }
+.spinner{ width:36px; height:36px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; }
+
+/* OPTIONS */
+.opt{ width:100%; text-align:left; padding:13px 16px; background:var(--surface2); border:2px solid var(--border); border-radius:12px; color:var(--text); font-family:'DM Mono',monospace; font-size:14px; cursor:pointer; transition:all .2s; margin-bottom:10px; display:block; }
+.opt:hover{ border-color:var(--accent); background:rgba(108,99,255,.08); }
+.opt.correct{ border-color:var(--accent2); background:rgba(0,229,160,.12); color:var(--accent2); }
+.opt.wrong{ border-color:var(--danger); background:rgba(255,79,106,.12); color:var(--danger); }
+.opt:disabled{ cursor:not-allowed; }
+
+/* TOAST */
+#toasts{ position:fixed; top:70px; right:14px; z-index:9999; display:flex; flex-direction:column; gap:8px; max-width:340px; }
+.toast{ background:var(--surface); border:2px solid; padding:12px 16px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.3); display:flex; align-items:center; gap:10px; font-size:13px; animation:fadeIn .3s ease; color:var(--text); }
+
+/* NOTIF PANEL */
+#notif-panel{ position:fixed; top:60px; right:0; width:320px; max-height:calc(100vh - 60px); background:var(--surface); border-left:1px solid var(--border); overflow-y:auto; z-index:998; transform:translateX(100%); transition:transform .3s ease; padding:16px; }
+#notif-panel.open{ transform:translateX(0); }
+
+/* MOBILE MENU */
+#mob-menu{ display:none; position:fixed; top:60px; left:0; right:0; bottom:0; background:rgba(10,10,15,.98); z-index:999; padding:20px; overflow-y:auto; }
+[data-theme="light"] #mob-menu{ background:rgba(240,240,248,.98); }
+.mob-btn{ display:block; width:100%; padding:16px; background:var(--surface); border:1px solid var(--border); border-radius:12px; color:var(--text); font-family:'Syne',sans-serif; font-size:16px; cursor:pointer; text-align:left; margin-bottom:10px; transition:border-color .2s; }
+.mob-btn:hover{ border-color:var(--accent); }
+
+/* PAGE CONTENT */
+.pc{ padding:76px 16px 40px; max-width:1200px; margin:0 auto; }
+
+/* HERO */
+.hero{ height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; position:relative; overflow:hidden; }
+.particle{ position:absolute; border-radius:50%; background:radial-gradient(circle,rgba(108,99,255,.6),transparent); animation:floatP 25s linear infinite; }
+
+/* TIMER */
+#timer-fill{ height:6px; border-radius:3px; background:var(--accent2); transition:width 1s linear,background .5s; }
+
+/* KIDS */
+.kids-bg{ background:linear-gradient(135deg,#1a1040,#2a1b5f); transition:background .3s; }
+.kids-card{ border-radius:20px; padding:24px; cursor:pointer; transition:transform .25s; text-align:center; }
+.kids-card:hover{ transform:translateY(-6px); }
+
+/* MEMORY */
+.memory-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; max-width:400px; margin:0 auto; }
+.mem-card{ height:80px; border-radius:12px; border:2px solid var(--border); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:2rem; background:var(--surface2); transition:all .3s; user-select:none; }
+.mem-card.flipped{ background:rgba(108,99,255,.2); border-color:var(--accent); }
+.mem-card.matched{ background:rgba(0,229,160,.15); border-color:var(--accent2); cursor:default; }
+
+/* BADGE */
+.badge-card{ background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:12px; text-align:center; transition:transform .2s; }
+.badge-card:hover{ transform:translateY(-4px); }
+.badge-card.locked{ opacity:.4; filter:grayscale(1); }
+
+/* PROFESSOR CHAT */
+.prof-header{ background:linear-gradient(135deg,rgba(108,99,255,.15),rgba(0,229,160,.08)); border:1px solid rgba(108,99,255,.3); border-radius:16px; padding:20px; margin-bottom:20px; display:flex; align-items:center; gap:16px; }
+.prof-avatar{ width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,#1a1040,var(--accent)); display:flex; align-items:center; justify-content:center; font-size:2rem; flex-shrink:0; border:2px solid var(--accent); }
+.chat-box{ height:400px; overflow-y:auto; background:rgba(0,0,0,.15); border:1px solid var(--border); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:10px; }
+[data-theme="light"] .chat-box{ background:rgba(108,99,255,.03); }
+.chat-msg{ max-width:80%; padding:12px 16px; border-radius:14px; font-size:13px; line-height:1.65; }
+.chat-msg.user{ background:var(--accent); color:#fff; align-self:flex-end; border-radius:14px 14px 4px 14px; }
+.chat-msg.ai{ background:rgba(255,255,255,.05); border:1px solid rgba(108,99,255,.25); align-self:flex-start; border-radius:14px 14px 14px 4px; }
+[data-theme="light"] .chat-msg.ai{ background:rgba(108,99,255,.06); color:var(--text); }
+.chat-msg .role{ font-size:10px; color:rgba(255,255,255,.5); margin-bottom:4px; font-family:'Syne',sans-serif; letter-spacing:.5px; }
+[data-theme="light"] .chat-msg.ai .role{ color:var(--accent); }
+.session-bar{ background:rgba(255,184,48,.08); border:1px solid rgba(255,184,48,.2); border-radius:10px; padding:8px 14px; font-size:12px; color:var(--warn); display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+
+/* SEARCH */
+.search-result{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:12px; transition:border-color .2s; cursor:pointer; }
+.search-result:hover{ border-color:var(--accent); }
+.search-result a{ color:var(--accent2); text-decoration:none; font-size:14px; font-weight:600; }
+
+/* APP LOADING */
+#app-loading{ position:fixed; inset:0; background:var(--bg); z-index:9998; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; }
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hide-m{ display:none!important; }
+  .show-m{ display:flex!important; }
+  .grid2,.grid3{ grid-template-columns:1fr!important; }
+  .memory-grid{ gap:6px; }
+  .mem-card{ height:65px; font-size:1.5rem; }
+}
+.show-m{ display:none; }
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.grid3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+.err-box{ color:var(--danger); font-size:13px; padding:10px 13px; background:rgba(255,79,106,.1); border-radius:8px; margin-bottom:12px; display:none; }
+.level-tabs{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+.ltab{ padding:7px 14px; border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--muted); font-size:12px; cursor:pointer; font-family:'Syne',sans-serif; font-weight:600; transition:all .2s; }
+.ltab.active{ background:var(--accent); border-color:var(--accent); color:#fff; }
+.sh{ font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:800; margin-bottom:6px; }
+.sh-sub{ color:var(--muted); font-size:13px; margin-bottom:22px; }
+
+/* PHONICS */
+.letter-tile{ width:50px; height:50px; background:var(--surface2); border:2px solid var(--border); border-radius:10px; display:inline-flex; align-items:center; justify-content:center; font-size:1.4rem; font-family:'Fredoka One',cursive; cursor:pointer; margin:4px; transition:all .2s; user-select:none; color:var(--text); }
+.letter-tile:hover{ border-color:var(--accent); background:rgba(108,99,255,.15); }
+.letter-tile.selected{ background:var(--accent); border-color:var(--accent); color:#fff; }
+.letter-tile.answer{ background:rgba(0,229,160,.2); border-color:var(--accent2); }
+.tt-cell{ background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:10px; text-align:center; font-size:13px; color:var(--text); }
+.tt-cell.highlight{ background:rgba(108,99,255,.2); border-color:var(--accent); color:var(--accent); }
+.riddle-card{ background:linear-gradient(135deg,rgba(108,99,255,.15),rgba(0,229,160,.05)); border:1px solid rgba(108,99,255,.3); border-radius:16px; padding:24px; text-align:center; margin-bottom:16px; }
+</style>
+</head>
+<body>
+
+<!-- PWA INSTALL BANNER -->
+<div id="install-banner">
+  <p>📱 Install Ox-Bridge on your phone for offline access!</p>
+  <div class="install-btns">
+    <button id="install-btn" class="btn" style="background:white;color:#6c63ff;padding:8px 16px;font-size:13px;">Install App</button>
+    <button onclick="dismissInstall()" class="btn" style="background:rgba(255,255,255,.2);color:white;padding:8px 12px;font-size:13px;">✕</button>
+  </div>
+</div>
+
+<!-- APP LOADING -->
+<div id="app-loading">
+  <div class="logo" style="font-size:28px;">OX-BRIDGE</div>
+  <div class="spinner"></div>
+  <p style="color:var(--muted);font-size:13px;">Powered by Ox-Bridge Technology 🇳🇬</p>
+</div>
+
+<!-- TOASTS -->
+<div id="toasts"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar" style="display:none;">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div class="logo" onclick="goHome()">OX-BRIDGE</div>
+    <span style="font-size:11px;color:var(--muted);" class="hide-m">Learning Hub</span>
+  </div>
+  <div class="nav-links hide-m">
+    <span class="nav-link" onclick="go('page-dashboard')">🏠</span>
+    <span class="nav-link" onclick="go('page-subjects')">📚 Learn</span>
+    <span class="nav-link" onclick="go('page-quiz')">🧠 Quiz</span>
+    <span class="nav-link" onclick="go('page-aichat')">🎓 Professor</span>
+    <span class="nav-link" onclick="go('page-search')">🔍 Search</span>
+    <span class="nav-link" onclick="go('page-past')">📝 Past Q</span>
+    <span class="nav-link" onclick="go('page-kids')">🎮 Kids</span>
+    <span class="nav-link" onclick="go('page-classroom')">💬 Class</span>
+    <span class="nav-link" onclick="go('page-leaderboard')">🏆</span>
+  </div>
+  <div class="nav-right">
+    <div class="pill hide-m">⭐<span id="n-score">0</span></div>
+    <div class="pill hide-m">🔥<span id="n-streak">0</span></div>
+    <div class="pill hide-m">🪙<span id="n-coins">0</span></div>
+    <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" title="Toggle dark/light mode">🌙</button>
+    <div class="notif-wrap" onclick="toggleNotif()">🔔<div class="notif-dot" id="ndot"></div></div>
+    <div class="pill" onclick="go('page-profile')" style="cursor:pointer;">👤<span id="n-user">—</span></div>
+    <div class="show-m" onclick="toggleMob()" style="font-size:24px;cursor:pointer;padding:6px;align-items:center;">☰</div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div id="mob-menu">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+    <div class="logo">OX-BRIDGE</div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn-mob">🌙</button>
+      <span onclick="toggleMob()" style="font-size:26px;cursor:pointer;">✕</span>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+    <div class="pill">⭐<span id="m-score">0</span></div>
+    <div class="pill">🔥<span id="m-streak">0</span></div>
+    <div class="pill">🪙<span id="m-coins">0</span></div>
+  </div>
+  <button class="mob-btn" onclick="nav('page-dashboard')">🏠 Dashboard</button>
+  <button class="mob-btn" onclick="nav('page-subjects')">📚 Subjects</button>
+  <button class="mob-btn" onclick="nav('page-quiz')">🧠 Quiz Arena</button>
+  <button class="mob-btn" onclick="nav('page-aichat')">🎓 Professor AI</button>
+  <button class="mob-btn" onclick="nav('page-search')">🔍 Search</button>
+  <button class="mob-btn" onclick="nav('page-past')">📝 Past Questions</button>
+  <button class="mob-btn" onclick="nav('page-kids')">🎮 Kids Zone</button>
+  <button class="mob-btn" onclick="nav('page-classroom')">💬 Live Classroom</button>
+  <button class="mob-btn" onclick="nav('page-leaderboard')">🏆 Leaderboard</button>
+  <button class="mob-btn" onclick="nav('page-profile')">👤 Profile</button>
+  <button class="mob-btn" style="border-color:var(--danger);color:var(--danger);" onclick="logout()">🚪 Logout</button>
+</div>
+
+<!-- NOTIF PANEL -->
+<div id="notif-panel">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+    <h3 style="font-family:'Syne',sans-serif;">🔔 Notifications</h3>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button onclick="markAllRead()" class="btn btn-outline" style="padding:5px 10px;font-size:11px;">Mark All Read</button>
+      <span onclick="toggleNotif()" style="cursor:pointer;font-size:20px;">✕</span>
+    </div>
+  </div>
+  <div id="notif-list"><p style="color:var(--muted);font-size:13px;">Loading...</p></div>
+</div>
+
+<!-- ===================== LANDING ===================== -->
+<div id="page-landing" class="page active">
+  <div class="hero">
+    <div style="position:relative;z-index:2;max-width:700px;padding:20px;">
+      <div style="display:inline-block;background:rgba(0,135,81,.2);color:var(--ng);padding:6px 16px;border-radius:9999px;font-size:13px;margin-bottom:20px;">🇳🇬 Built for Nigerian Students</div>
+      <h1 style="font-size:clamp(2rem,6vw,3.5rem);line-height:1.1;font-family:'Syne',sans-serif;font-weight:800;">
+        Learn Smarter<br>with <span style="background:linear-gradient(90deg,#6c63ff,#00e5a0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">AI Power</span>
+      </h1>
+      <p style="margin:20px auto;font-size:1rem;color:var(--muted);max-width:500px;line-height:1.7;">AI-powered lessons, quizzes, professor chat, and live classrooms for Nursery to University level students in Nigeria.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <button onclick="go('page-signup')" class="btn btn-primary" style="font-size:1rem;padding:14px 32px;">Get Started Free →</button>
+        <button onclick="go('page-login')" class="btn btn-outline" style="font-size:1rem;padding:14px 32px;">Login</button>
+      </div>
+      <div style="margin-top:50px;display:flex;justify-content:center;gap:30px;flex-wrap:wrap;">
+        <div style="text-align:center;"><div style="font-size:1.8rem;font-weight:700;font-family:'Syne',sans-serif;">10,000+</div><div style="color:var(--muted);font-size:13px;">Students</div></div>
+        <div style="text-align:center;"><div style="font-size:1.8rem;font-weight:700;font-family:'Syne',sans-serif;">26</div><div style="color:var(--muted);font-size:13px;">Subjects</div></div>
+        <div style="text-align:center;"><div style="font-size:1.8rem;font-weight:700;font-family:'Syne',sans-serif;">4</div><div style="color:var(--muted);font-size:13px;">AI Engines</div></div>
+        <div style="text-align:center;"><div style="font-size:1.8rem;font-weight:700;font-family:'Syne',sans-serif;">6</div><div style="color:var(--muted);font-size:13px;">Levels</div></div>
+      </div>
+    </div>
+    <div id="particles"></div>
+  </div>
+  <div style="padding:70px 16px;max-width:1100px;margin:0 auto;">
+    <h2 style="text-align:center;font-size:1.8rem;margin-bottom:36px;font-family:'Syne',sans-serif;">Everything You Need to Excel</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;">
+      <div class="card" style="text-align:center;"><div style="font-size:2.5rem;margin-bottom:12px;">🎓</div><h3 style="font-family:'Syne',sans-serif;">Professor AI</h3><p style="color:var(--muted);margin-top:8px;font-size:13px;">Chat with your personal AI professor anytime</p></div>
+      <div class="card" style="text-align:center;"><div style="font-size:2.5rem;margin-bottom:12px;">🧠</div><h3 style="font-family:'Syne',sans-serif;">Smart Quiz</h3><p style="color:var(--muted);margin-top:8px;font-size:13px;">AI-generated questions with full explanations</p></div>
+      <div class="card" style="text-align:center;"><div style="font-size:2.5rem;margin-bottom:12px;">🔍</div><h3 style="font-family:'Syne',sans-serif;">Smart Search</h3><p style="color:var(--muted);margin-top:8px;font-size:13px;">Search the web, YouTube & educational resources</p></div>
+      <div class="card" style="text-align:center;"><div style="font-size:2.5rem;margin-bottom:12px;">📝</div><h3 style="font-family:'Syne',sans-serif;">Past Questions</h3><p style="color:var(--muted);margin-top:8px;font-size:13px;">Real WAEC & JAMB questions</p></div>
+      <div class="card" style="text-align:center;"><div style="font-size:2.5rem;margin-bottom:12px;">🎮</div><h3 style="font-family:'Syne',sans-serif;">Kids Zone</h3><p style="color:var(--muted);margin-top:8px;font-size:13px;">10+ fun educational games</p></div>
+      <div class="card" style="text-align:center;"><div style="font-size:2.5rem;margin-bottom:12px;">💬</div><h3 style="font-family:'Syne',sans-serif;">Live Classroom</h3><p style="color:var(--muted);margin-top:8px;font-size:13px;">Study together in real-time</p></div>
+    </div>
+  </div>
+  <div style="background:linear-gradient(90deg,var(--accent),#00e5a0);color:#000;padding:50px 20px;text-align:center;margin:20px 16px;border-radius:24px;">
+    <h2 style="font-size:1.8rem;margin-bottom:14px;font-family:'Syne',sans-serif;">Ready to start your learning journey?</h2>
+    <button onclick="go('page-signup')" class="btn" style="background:#fff;color:#000;font-size:1rem;padding:14px 36px;">Create Free Account</button>
+  </div>
+  <footer style="text-align:center;padding:50px 16px;color:var(--muted);font-size:13px;">
+    <div class="logo" style="font-size:18px;margin-bottom:10px;">OX-BRIDGE</div>
+    <p style="margin-bottom:4px;">Built with ❤️ by Goodnews Solomon</p>
+    <p style="color:var(--accent);font-weight:600;">Ox-Bridge Technology</p>
+    <p style="margin-top:16px;">© 2026 Ox-Bridge Learning Hub. All rights reserved.</p>
+  </footer>
+</div>
+
+<!-- ===================== SIGNUP ===================== -->
+<div id="page-signup" class="page">
+  <div style="max-width:420px;margin:70px auto 40px;padding:16px;">
+    <div onclick="go('page-landing')" style="cursor:pointer;font-size:26px;margin-bottom:16px;color:var(--muted);">←</div>
+    <div class="card" style="padding:32px 24px;">
+      <div style="text-align:center;margin-bottom:24px;"><div class="logo" style="font-size:24px;">OX-BRIDGE</div><h2 style="margin-top:14px;font-family:'Syne',sans-serif;">Create Account</h2><p style="color:var(--muted);font-size:13px;margin-top:6px;">Join thousands of Nigerian students</p></div>
+      <input id="su-user" class="inp" type="text" placeholder="Username (min 3 chars)" autocomplete="username">
+      <input id="su-email" class="inp" type="email" placeholder="your@email.com" autocomplete="email">
+      <div style="position:relative;"><input id="su-pass" class="inp" type="password" placeholder="Password (min 6 chars)" style="padding-right:46px;" autocomplete="new-password"><span onclick="togglePwd('su-pass',this)" style="position:absolute;right:14px;top:15px;cursor:pointer;">👁</span></div>
+      <div style="position:relative;"><input id="su-conf" class="inp" type="password" placeholder="Confirm Password" style="padding-right:46px;" autocomplete="new-password"><span onclick="togglePwd('su-conf',this)" style="position:absolute;right:14px;top:15px;cursor:pointer;">👁</span></div>
+      <div id="su-err" class="err-box"></div>
+      <button onclick="doSignup()" id="su-btn" class="btn btn-primary" style="width:100%;padding:14px;">Create Account</button>
+      <p style="text-align:center;margin-top:18px;color:var(--muted);font-size:13px;">Already have an account? <span onclick="go('page-login')" style="color:var(--accent);cursor:pointer;">Login →</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== LOGIN ===================== -->
+<div id="page-login" class="page">
+  <div style="max-width:420px;margin:70px auto 40px;padding:16px;">
+    <div onclick="go('page-landing')" style="cursor:pointer;font-size:26px;margin-bottom:16px;color:var(--muted);">←</div>
+    <div class="card" style="padding:32px 24px;" id="login-card">
+      <div style="text-align:center;margin-bottom:24px;"><div class="logo" style="font-size:24px;">OX-BRIDGE</div><h2 style="margin-top:14px;font-family:'Syne',sans-serif;">Welcome Back 👋</h2><p style="color:var(--muted);font-size:13px;margin-top:6px;">Login to continue learning</p></div>
+      <input id="li-user" class="inp" type="text" placeholder="Username" autocomplete="username">
+      <div style="position:relative;"><input id="li-pass" class="inp" type="password" placeholder="Password" style="padding-right:46px;" autocomplete="current-password"><span onclick="togglePwd('li-pass',this)" style="position:absolute;right:14px;top:15px;cursor:pointer;">👁</span></div>
+      <div id="li-err" class="err-box"></div>
+      <button onclick="doLogin()" id="li-btn" class="btn btn-primary" style="width:100%;padding:14px;">Login</button>
+      <p style="text-align:center;margin-top:18px;color:var(--muted);font-size:13px;">Don't have an account? <span onclick="go('page-signup')" style="color:var(--accent);cursor:pointer;">Sign up →</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== DASHBOARD ===================== -->
+<div id="page-dashboard" class="page">
+  <div class="pc">
+    <div id="greeting" style="font-size:1.5rem;font-family:'Syne',sans-serif;font-weight:800;margin-bottom:4px;"></div>
+    <p style="color:var(--muted);margin-bottom:24px;font-size:13px;">Ready to learn something new today?</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:13px;margin-bottom:24px;">
+      <div class="card" style="text-align:center;"><div style="font-size:1.8rem;">⭐</div><div id="ds-score" style="font-size:1.5rem;font-weight:700;font-family:'Syne',sans-serif;">—</div><div style="color:var(--muted);font-size:12px;">Score</div></div>
+      <div class="card" style="text-align:center;"><div style="font-size:1.8rem;">🔥</div><div id="ds-streak" style="font-size:1.5rem;font-weight:700;font-family:'Syne',sans-serif;">—</div><div style="color:var(--muted);font-size:12px;">Streak</div></div>
+      <div class="card" style="text-align:center;"><div style="font-size:1.8rem;">🧠</div><div id="ds-quizzes" style="font-size:1.5rem;font-weight:700;font-family:'Syne',sans-serif;">—</div><div style="color:var(--muted);font-size:12px;">Quizzes</div></div>
+      <div class="card" style="text-align:center;"><div style="font-size:1.8rem;">🪙</div><div id="ds-coins" style="font-size:1.5rem;font-weight:700;font-family:'Syne',sans-serif;">—</div><div style="color:var(--muted);font-size:12px;">Coins</div></div>
+    </div>
+    <div class="card" style="border:2px solid var(--warn);margin-bottom:24px;">
+      <h3 style="color:var(--warn);font-family:'Syne',sans-serif;margin-bottom:4px;">⚡ Daily Challenge</h3>
+      <p style="color:var(--muted);font-size:12px;margin-bottom:14px;">Answer correctly for +5 points &amp; +10 coins!</p>
+      <div id="dc-area"><div class="skel" style="height:18px;margin-bottom:8px;"></div><div class="skel" style="height:40px;"></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;">
+      <div>
+        <h3 style="margin-bottom:14px;font-family:'Syne',sans-serif;">⚡ Quick Study</h3>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+          <div onclick="openLearn('Mathematics','SSS')" class="card card-hover" style="text-align:center;padding:12px;">📐<br><small>Maths</small></div>
+          <div onclick="openLearn('English Language','SSS')" class="card card-hover" style="text-align:center;padding:12px;">📖<br><small>English</small></div>
+          <div onclick="openLearn('Biology','SSS')" class="card card-hover" style="text-align:center;padding:12px;">🔬<br><small>Biology</small></div>
+          <div onclick="openLearn('Physics','SSS')" class="card card-hover" style="text-align:center;padding:12px;">⚛️<br><small>Physics</small></div>
+          <div onclick="openLearn('Chemistry','SSS')" class="card card-hover" style="text-align:center;padding:12px;">⚗️<br><small>Chem</small></div>
+          <div onclick="openLearn('Economics','SSS')" class="card card-hover" style="text-align:center;padding:12px;">📊<br><small>Econs</small></div>
+        </div>
+      </div>
+      <div>
+        <h3 style="margin-bottom:14px;font-family:'Syne',sans-serif;">🏅 My Badges</h3>
+        <div id="ds-badges" style="display:flex;gap:10px;flex-wrap:wrap;"><div class="skel" style="width:54px;height:54px;border-radius:10px;"></div><div class="skel" style="width:54px;height:54px;border-radius:10px;"></div></div>
+        <button onclick="go('page-profile')" class="btn btn-outline" style="margin-top:14px;padding:8px 16px;font-size:12px;">View All Badges</button>
+      </div>
+    </div>
+    <div style="margin-top:24px;">
+      <h3 style="margin-bottom:14px;font-family:'Syne',sans-serif;">🚀 Quick Access</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;">
+        <button onclick="go('page-aichat')" class="btn btn-primary" style="padding:12px;">🎓 Professor AI</button>
+        <button onclick="go('page-search')" class="btn btn-outline" style="padding:12px;">🔍 Search</button>
+        <button onclick="go('page-past')" class="btn" style="background:var(--surface2);padding:12px;color:var(--text);">📝 Past Q</button>
+        <button onclick="go('page-kids')" class="btn" style="background:linear-gradient(135deg,#ff6b6b,#ffd93d);color:#000;padding:12px;">🎮 Kids Zone</button>
+        <button onclick="go('page-classroom')" class="btn" style="background:var(--surface2);padding:12px;color:var(--text);">💬 Classroom</button>
+        <button onclick="go('page-leaderboard')" class="btn" style="background:var(--surface2);padding:12px;color:var(--text);">🏆 Leaderboard</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SUBJECTS ===================== -->
+<div id="page-subjects" class="page">
+  <div class="pc">
+    <div class="sh">📚 Subjects</div>
+    <p class="sh-sub">Choose your level and pick a subject to start learning</p>
+    <div class="level-tabs" id="level-tabs"></div>
+    <div id="subjects-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;"></div>
+  </div>
+</div>
+
+<!-- ===================== LEARN ===================== -->
+<div id="page-learn" class="page">
+  <div class="pc" style="max-width:800px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+      <span onclick="go('page-subjects')" style="cursor:pointer;font-size:22px;color:var(--muted);">←</span>
+      <div class="sh" style="margin:0;">🤖 AI Tutor</div>
+    </div>
+    <div class="card" style="margin-bottom:18px;">
+      <div class="grid2" style="margin-bottom:12px;">
+        <div><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:5px;">TOPIC</label><input id="l-topic" class="inp" style="margin:0;" placeholder="e.g. Photosynthesis"></div>
+        <div><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:5px;">SUBJECT</label><input id="l-subj" class="inp" style="margin:0;" placeholder="e.g. Biology"></div>
+      </div>
+      <div style="margin-bottom:12px;"><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:5px;">LEVEL</label>
+        <select id="l-level" class="inp" style="margin:0;"><option>Nursery</option><option>Primary</option><option>JSS</option><option selected>SSS</option><option>WAEC</option><option>JAMB</option><option>University</option></select>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button onclick="doLearn()" id="l-btn" class="btn btn-primary">✨ Teach Me</button>
+        <button onclick="go('page-aichat')" class="btn btn-outline">🎓 Ask Professor</button>
+      </div>
+    </div>
+    <div id="l-loading" style="display:none;" class="card" style="text-align:center;padding:30px;"><div style="font-size:2rem;animation:bounce 1s infinite;">🤖</div><p style="color:var(--muted);margin-top:10px;">AI is preparing your lesson...</p></div>
+    <div id="l-result" style="display:none;">
+      <div class="card" style="border-color:var(--accent2);">
+        <h3 id="l-title" style="font-family:'Syne',sans-serif;color:var(--accent2);margin-bottom:14px;"></h3>
+        <div id="l-text" style="line-height:1.9;font-size:14px;white-space:pre-wrap;"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
+          <button onclick="logStudy()" class="btn btn-outline" style="font-size:12px;padding:8px 14px;">📝 Log Study</button>
+          <button onclick="goQuizFromLearn()" class="btn btn-primary" style="font-size:12px;padding:8px 14px;">🧠 Take Quiz</button>
+          <button onclick="go('page-aichat')" class="btn" style="background:var(--surface2);font-size:12px;padding:8px 14px;color:var(--text);">🎓 Ask Professor</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== QUIZ ===================== -->
+<div id="page-quiz" class="page">
+  <div class="pc" style="max-width:700px;">
+    <div class="sh">🧠 Quiz Arena</div>
+    <p class="sh-sub">Test your knowledge with AI-generated questions</p>
+    <div id="qz-setup" class="card">
+      <div class="grid3" style="margin-bottom:14px;">
+        <div><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:5px;">SUBJECT</label><input id="qz-subj" class="inp" style="margin:0;" placeholder="e.g. Mathematics"></div>
+        <div><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:5px;">LEVEL</label><select id="qz-level" class="inp" style="margin:0;"><option>Nursery</option><option>Primary</option><option>JSS</option><option selected>SSS</option><option>WAEC</option><option>JAMB</option><option>University</option></select></div>
+        <div><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:5px;">TOPIC</label><input id="qz-topic" class="inp" style="margin:0;" placeholder="optional"></div>
+      </div>
+      <button onclick="startQuiz()" id="qz-btn" class="btn btn-primary" style="padding:13px 28px;">▶ Start Quiz</button>
+    </div>
+    <div id="qz-active" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;" id="qz-counter">Q 1/5</div>
+        <div style="display:flex;gap:8px;"><div class="pill">⭐<span id="qz-live">0</span></div><div class="pill">⏱<span id="qz-time">30</span>s</div></div>
+      </div>
+      <div style="height:6px;background:var(--surface2);border-radius:3px;margin-bottom:18px;"><div id="timer-fill"></div></div>
+      <div class="card"><p id="qz-q" style="font-size:1rem;line-height:1.7;margin-bottom:18px;font-weight:600;"></p><div id="qz-opts"></div><div id="qz-expl" style="display:none;margin-top:14px;padding:12px;background:rgba(108,99,255,.1);border-radius:10px;border-left:4px solid var(--accent);font-size:13px;line-height:1.6;"></div><button onclick="nextQ()" id="qz-next" class="btn btn-primary" style="display:none;margin-top:14px;">Next →</button></div>
+    </div>
+    <div id="qz-results" style="display:none;" class="card" style="text-align:center;">
+      <div style="font-size:3rem;margin-bottom:8px;" id="qz-emoji">🎉</div>
+      <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:6px;" id="qz-final"></div>
+      <p id="qz-msg" style="color:var(--muted);margin-bottom:18px;"></p>
+      <div id="qz-new-badges" style="margin-bottom:14px;"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+        <button onclick="retakeQuiz()" class="btn btn-outline">🔄 Retake</button>
+        <button onclick="go('page-leaderboard')" class="btn btn-primary">🏆 Leaderboard</button>
+        <button onclick="go('page-dashboard')" class="btn" style="background:var(--surface2);color:var(--text);">🏠 Home</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PROFESSOR AI CHAT ===================== -->
+<div id="page-aichat" class="page">
+  <div class="pc" style="max-width:780px;">
+    <div class="prof-header">
+      <div class="prof-avatar">🎓</div>
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--accent2);">Professor Ox-Bridge</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px;">Your Personal AI Academic Tutor</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Nigerian Curriculum • WAEC • JAMB • University</div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+          <span style="background:rgba(0,229,160,.15);color:var(--accent2);padding:3px 10px;border-radius:9999px;font-size:10px;">🟢 Available</span>
+          <span style="background:rgba(108,99,255,.15);color:var(--accent);padding:3px 10px;border-radius:9999px;font-size:10px;">PhD in All Subjects</span>
+        </div>
+      </div>
+    </div>
+    <div class="session-bar">
+      <span>⏱ Session: <span id="session-time">00:00</span></span>
+      <span style="font-size:11px;color:var(--muted);">Questions: <span id="q-count">0</span></span>
+    </div>
+    <div class="card" style="margin-bottom:16px;padding:14px;">
+      <div class="grid3">
+        <div><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:5px;">SUBJECT FOCUS</label><input id="ac-subj" class="inp" style="margin:0;" value="General" placeholder="e.g. Biology"></div>
+        <div><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:5px;">LEVEL</label><select id="ac-level" class="inp" style="margin:0;"><option>Nursery</option><option>Primary</option><option>JSS</option><option selected>SSS</option><option>WAEC</option><option>JAMB</option><option>University</option></select></div>
+        <div style="display:flex;align-items:flex-end;"><button onclick="clearChatHistory()" class="btn btn-danger" style="padding:10px 14px;font-size:12px;width:100%;">🗑 New Session</button></div>
+      </div>
+    </div>
+    <div style="margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;">
+      <span onclick="quickQ('Explain the causes of World War 1')" class="pill" style="cursor:pointer;font-size:11px;">WW1 causes</span>
+      <span onclick="quickQ('What is photosynthesis and how does it work?')" class="pill" style="cursor:pointer;font-size:11px;">Photosynthesis</span>
+      <span onclick="quickQ('Explain quadratic equations with examples')" class="pill" style="cursor:pointer;font-size:11px;">Quadratic equations</span>
+      <span onclick="quickQ('How does the human digestive system work?')" class="pill" style="cursor:pointer;font-size:11px;">Digestive system</span>
+      <span onclick="quickQ('Explain supply and demand in economics')" class="pill" style="cursor:pointer;font-size:11px;">Supply & demand</span>
+      <span onclick="quickQ('What are the main themes in Things Fall Apart?')" class="pill" style="cursor:pointer;font-size:11px;">Things Fall Apart</span>
+    </div>
+    <div class="card" style="padding:16px;">
+      <div class="chat-box" id="chat-box">
+        <div class="chat-msg ai">
+          <div class="role">🎓 PROFESSOR OX-BRIDGE</div>
+          <div>Good day! I am Professor Ox-Bridge, your dedicated AI academic tutor. I have extensive knowledge across all subjects in the Nigerian curriculum — from Primary to University level.<br><br>Whether you need help understanding a difficult concept, preparing for WAEC or JAMB, or simply want to deepen your knowledge, I am here to guide you. What shall we explore today?</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <input id="ac-msg" class="inp" style="margin:0;flex:1;" placeholder="Ask the Professor anything...">
+        <button onclick="sendChat()" class="btn btn-primary" style="padding:13px 18px;">Send</button>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:8px;">Professor Ox-Bridge powered by 4 AI engines 🇳🇬</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SEARCH ===================== -->
+<div id="page-search" class="page">
+  <div class="pc" style="max-width:800px;">
+    <div class="sh">🔍 Smart Search</div>
+    <p class="sh-sub">Search the web, find YouTube videos, educational resources & more</p>
+    <div class="card" style="margin-bottom:20px;">
+      <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+        <input id="s-query" class="inp" style="margin:0;flex:1;min-width:200px;" placeholder="Search anything e.g. 'photosynthesis explained', 'WAEC 2024'...">
+        <button onclick="doSearch()" id="s-btn" class="btn btn-primary" style="padding:13px 22px;">🔍 Search</button>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span style="font-size:11px;color:var(--muted);">Quick:</span>
+        <span onclick="quickSearch('WAEC past questions 2024')" class="pill" style="cursor:pointer;font-size:11px;">WAEC 2024</span>
+        <span onclick="quickSearch('JAMB UTME preparation tips')" class="pill" style="cursor:pointer;font-size:11px;">JAMB Tips</span>
+        <span onclick="quickSearch('Nigeria university admission 2026')" class="pill" style="cursor:pointer;font-size:11px;">Admission 2026</span>
+        <span onclick="quickSearch('times table for kids')" class="pill" style="cursor:pointer;font-size:11px;">Times Tables</span>
+        <span onclick="quickSearch('Nigeria current affairs 2026')" class="pill" style="cursor:pointer;font-size:11px;">Current Affairs</span>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:20px;border-color:rgba(255,68,68,.3);">
+      <h3 style="font-family:'Syne',sans-serif;color:#ff4444;margin-bottom:8px;">▶ YouTube Videos</h3>
+      <p style="color:var(--muted);font-size:12px;margin-bottom:12px;">Find video lessons on YouTube</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <input id="yt-query" class="inp" style="margin:0;flex:1;min-width:160px;" placeholder="e.g. quadratic equations tutorial...">
+        <button onclick="openYouTube()" class="btn btn-danger" style="padding:12px 18px;">▶ Find Videos</button>
+      </div>
+    </div>
+    <div id="s-loading" style="display:none;text-align:center;padding:30px;"><div class="spinner" style="margin:0 auto;"></div><p style="color:var(--muted);margin-top:10px;">Searching the web...</p></div>
+    <div id="s-results" style="display:none;"><h3 style="font-family:'Syne',sans-serif;margin-bottom:16px;" id="s-results-title">Search Results</h3><div id="s-results-list"></div></div>
+    <div id="s-empty" style="display:none;" class="card" style="text-align:center;padding:30px;"><div style="font-size:2.5rem;margin-bottom:10px;">🔍</div><p style="color:var(--muted);">No results found. Try a different search term.</p></div>
+  </div>
+</div>
+
+<!-- ===================== PAST QUESTIONS ===================== -->
+<div id="page-past" class="page">
+  <div class="pc" style="max-width:700px;">
+    <div class="sh">📝 Past Questions Bank</div>
+    <p class="sh-sub">Practice real WAEC & JAMB questions with explanations</p>
+    <div class="card" style="margin-bottom:18px;">
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <button onclick="setPQExam('WAEC',this)" id="pq-w" class="btn btn-primary" style="padding:8px 18px;">WAEC</button>
+        <button onclick="setPQExam('JAMB',this)" id="pq-j" class="btn btn-outline" style="padding:8px 18px;">JAMB</button>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
+        <div style="flex:1;min-width:160px;"><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:5px;">SUBJECT</label><input id="pq-subj" class="inp" style="margin:0;" placeholder="e.g. Mathematics"></div>
+        <button onclick="loadPQ()" class="btn btn-primary" style="padding:12px 22px;">Load Question</button>
+      </div>
+    </div>
+    <div id="pq-loading" style="display:none;" class="card" style="text-align:center;padding:24px;"><div class="spinner" style="margin:0 auto;"></div><p style="color:var(--muted);margin-top:10px;">Loading question...</p></div>
+    <div id="pq-display" style="display:none;" class="card" style="border-color:var(--accent);">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;"><span class="pill" id="pq-b1">WAEC</span><span class="pill" id="pq-b2">—</span></div>
+      <p id="pq-q" style="font-size:1rem;line-height:1.7;margin-bottom:18px;font-weight:600;"></p>
+      <div id="pq-opts"></div>
+      <div id="pq-expl" style="display:none;margin-top:14px;padding:12px;background:rgba(0,229,160,.08);border-radius:10px;border-left:4px solid var(--accent2);font-size:13px;line-height:1.6;"></div>
+      <button onclick="loadPQ()" id="pq-next" class="btn btn-primary" style="display:none;margin-top:14px;">Next Question →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== KIDS ZONE ===================== -->
+<div id="page-kids" class="page">
+  <div class="kids-bg" style="min-height:100vh;">
+    <div class="pc">
+      <h2 style="font-family:'Fredoka One',cursive;font-size:2.2rem;color:#ffd93d;margin-bottom:4px;">🎮 Kids Zone</h2>
+      <p style="color:rgba(255,255,255,.7);margin-bottom:14px;">10+ fun educational games! Learn while you play! 🌟</p>
+      <div style="display:flex;gap:8px;margin-bottom:26px;flex-wrap:wrap;" id="kids-lvl">
+        <button onclick="setKL('Nursery',this)" class="btn" style="background:#ff6b6b;color:#fff;">🌱 Nursery</button>
+        <button onclick="setKL('Primary',this)" class="btn" style="background:#ffd93d;color:#000;">📚 Primary</button>
+        <button onclick="setKL('JSS',this)" class="btn" style="background:#6bcb77;color:#fff;">🎓 JSS</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:30px;">
+        <div class="kids-card" style="background:linear-gradient(135deg,#ff6b6b,#ff8e8e);" onclick="showKidsGame('scramble')"><div style="font-size:2.5rem;margin-bottom:10px;">🔤</div><h3 style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:#fff;">Word Scramble</h3><p style="color:rgba(255,255,255,.85);font-size:12px;margin-top:6px;">Unscramble the letters!</p></div>
+        <div class="kids-card" style="background:linear-gradient(135deg,#ffd93d,#ffec6e);" onclick="showKidsGame('spelling')"><div style="font-size:2.5rem;margin-bottom:10px;">🐝</div><h3 style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:#333;">Spelling Bee</h3><p style="color:#555;font-size:12px;margin-top:6px;">Can you spell it right?</p></div>
+        <div class="kids-card" style="background:linear-gradient(135deg,#6bcb77,#8ee89a);" onclick="showKidsGame('math')"><div style="font-size:2.5rem;margin-bottom:10px;">➕</div><h3 style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:#fff;">Math Challenge</h3><p style="color:rgba(255,255,255,.85);font-size:12px;margin-top:6px;">Solve fun problems!</p></div>
+        <div class="kids-card" style="background:linear-gradient(135deg,#4d96ff,#6babff);" onclick="showKidsGame('memory')"><div style="font-size:2.5rem;margin-bottom:10px;">🃏</div><h3 style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:#fff;">Match Pairs</h3><p style="color:rgba(255,255,255,.85);font-size:12px;margin-top:6px;">Find matching cards!</p></div>
+        <div class="kids-card" style="background:linear-gradient(135deg,#a855f7,#c084fc);" onclick="showKidsGame('times')"><div style="font-size:2.5rem;margin-bottom:10px;">✖️</div><h3 style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:#fff;">Times Tables</h3><p style="color:rgba(255,255,255,.85);font-size:12px;margin-top:6px;">Master multiplication!</p></div>
+        <div class="kids-card" style="background:linear-gradient(135deg,#f97316,#fb923c);" onclick="showKidsGame('riddles')"><div style="font-size:2.5rem;margin-bottom:10px;">🤔</div><h3 style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:#fff;">Riddles</h3><p style="color:rgba(255,255,255,.85);font-size:12px;margin-top:6px;">Can you solve them?</p></div>
+        <div class="kids-card" style="background:linear-gradient(135deg,#ec4899,#f472b6);" onclick="showKidsGame('phonics')"><div style="font-size:2.5rem;margin-bottom:10px;">🔡</div><h3 style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:#fff;">Build a Word</h3><p style="color:rgba(255,255,255,.85);font-size:12px;margin-top:6px;">Arrange the letters!</p></div>
+        <div class="kids-card" style="background:linear-gradient(135deg,#14b8a6,#2dd4bf);" onclick="showKidsGame('treasure')"><div style="font-size:2.5rem;margin-bottom:10px;">🗺️</div><h3 style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:#fff;">Treasure Hunt</h3><p style="color:rgba(255,255,255,.85);font-size:12px;margin-top:6px;">Follow the clues!</p></div>
+        <div class="kids-card" style="background:linear-gradient(135deg,#64748b,#94a3b8);" onclick="showKidsGame('trivia')"><div style="font-size:2.5rem;margin-bottom:10px;">❓</div><h3 style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:#fff;">Fun Trivia</h3><p style="color:rgba(255,255,255,.85);font-size:12px;margin-top:6px;">Nigeria & World facts!</p></div>
+      </div>
+      <div id="kids-area" style="display:none;" class="card" style="border:2px solid #ffd93d;min-height:200px;"><div id="kids-content"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CLASSROOM ===================== -->
+<div id="page-classroom" class="page">
+  <div class="pc" style="max-width:700px;">
+    <div class="sh">💬 Live Classroom</div>
+    <p class="sh-sub">Study together with the AI tutor in real-time</p>
+    <div id="room-sel">
+      <div class="card">
+        <h3 style="font-family:'Syne',sans-serif;margin-bottom:14px;">Join a Study Room</h3>
+        <input id="room-inp" class="inp" placeholder="Enter room name e.g. math-waec-2026">
+        <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">Or join a popular room:</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-bottom:16px;">
+          <div onclick="document.getElementById('room-inp').value='math-waec-2026'" class="card card-hover" style="padding:12px;text-align:center;">📐 Math WAEC</div>
+          <div onclick="document.getElementById('room-inp').value='biology-jamb'" class="card card-hover" style="padding:12px;text-align:center;">🔬 Bio JAMB</div>
+          <div onclick="document.getElementById('room-inp').value='english-practice'" class="card card-hover" style="padding:12px;text-align:center;">📖 English</div>
+          <div onclick="document.getElementById('room-inp').value='general-study'" class="card card-hover" style="padding:12px;text-align:center;">🌍 General</div>
+        </div>
+        <button onclick="joinRoom()" class="btn btn-primary" style="width:100%;padding:14px;">Join Classroom</button>
+        <div style="margin-top:16px;padding:12px;background:rgba(108,99,255,.08);border-radius:10px;border-left:3px solid var(--accent);">
+          <p style="font-size:12px;color:var(--muted);">💡 Type <span style="color:var(--accent);">/ai what is osmosis?</span> to ask the AI tutor — everyone sees the answer!</p>
+        </div>
+      </div>
+    </div>
+    <div id="room-active" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="pill" style="border-color:var(--accent2);">🟢 <span id="cl-room">-</span></span>
+          <span class="pill">👥 <span id="cl-cnt">1</span> online</span>
+          <span id="cl-status" class="pill" style="font-size:11px;color:var(--accent2);border-color:var(--accent2);">Connected</span>
+        </div>
+        <button onclick="leaveRoom()" class="btn btn-danger" style="padding:7px 14px;font-size:12px;">Leave Room</button>
+      </div>
+      <div id="cl-msgs" style="height:360px;overflow-y:auto;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px;"></div>
+      <div style="display:flex;gap:8px;">
+        <input id="cl-inp" class="inp" style="margin:0;flex:1;" placeholder="Type a message or /ai [question]...">
+        <button onclick="sendMsg()" class="btn btn-primary" style="padding:13px 18px;">Send</button>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:6px;">Tip: <span style="color:var(--accent);">/ai</span> = ask the AI tutor for everyone</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== LEADERBOARD ===================== -->
+<div id="page-leaderboard" class="page">
+  <div class="pc">
+    <div class="sh">🏆 Leaderboard</div>
+    <p class="sh-sub">Top students across Nigeria</p>
+    <div id="lb-content"><div class="skel" style="height:200px;border-radius:16px;"></div></div>
+  </div>
+</div>
+
+<!-- ===================== PROFILE ===================== -->
+<div id="page-profile" class="page">
+  <div class="pc" style="max-width:680px;">
+    <div class="sh">👤 My Profile</div>
+    <div class="card" style="display:flex;gap:18px;align-items:center;margin-bottom:18px;flex-wrap:wrap;">
+      <div id="pf-av" style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-family:'Syne',sans-serif;font-weight:800;flex-shrink:0;"></div>
+      <div style="flex:1;"><div id="pf-un" style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;"></div><div id="pf-fn" style="color:var(--muted);font-size:13px;margin-top:3px;"></div><div id="pf-bio" style="color:var(--muted);font-size:12px;margin-top:4px;"></div></div>
+      <button onclick="toggleEdit()" class="btn btn-outline" style="padding:7px 14px;font-size:12px;">✏️ Edit</button>
+    </div>
+    <div id="edit-form" class="card" style="display:none;margin-bottom:18px;border-color:var(--accent);">
+      <h3 style="font-family:'Syne',sans-serif;margin-bottom:14px;">Edit Profile</h3>
+      <input id="ep-fn" class="inp" placeholder="Full Name">
+      <input id="ep-bio" class="inp" placeholder="Bio (e.g. SSS3 student)">
+      <input id="ep-pic" class="inp" placeholder="Profile Picture URL (optional)">
+      <div style="display:flex;gap:10px;"><button onclick="saveProfile()" class="btn btn-primary">Save</button><button onclick="toggleEdit()" class="btn" style="background:var(--surface2);color:var(--text);">Cancel</button></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;">
+      <div class="card" style="text-align:center;"><div style="font-size:1.3rem;">⭐</div><div id="pf-sc" style="font-weight:700;font-family:'Syne',sans-serif;">—</div><div style="color:var(--muted);font-size:11px;">Score</div></div>
+      <div class="card" style="text-align:center;"><div style="font-size:1.3rem;">🔥</div><div id="pf-st" style="font-weight:700;font-family:'Syne',sans-serif;">—</div><div style="color:var(--muted);font-size:11px;">Streak</div></div>
+      <div class="card" style="text-align:center;"><div style="font-size:1.3rem;">🧠</div><div id="pf-qz" style="font-weight:700;font-family:'Syne',sans-serif;">—</div><div style="color:var(--muted);font-size:11px;">Quizzes</div></div>
+      <div class="card" style="text-align:center;"><div style="font-size:1.3rem;">🪙</div><div id="pf-co" style="font-weight:700;font-family:'Syne',sans-serif;">—</div><div style="color:var(--muted);font-size:11px;">Coins</div></div>
+    </div>
+    <div class="card" style="margin-bottom:18px;"><h3 style="font-family:'Syne',sans-serif;margin-bottom:14px;">🏅 Badges</h3><div id="pf-badges" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;"></div></div>
+    <div class="card" style="margin-bottom:18px;"><h3 style="font-family:'Syne',sans-serif;margin-bottom:14px;">📊 Recent Quizzes</h3><div id="pf-qhist"></div></div>
+    <div class="card" style="margin-bottom:22px;"><h3 style="font-family:'Syne',sans-serif;margin-bottom:14px;">📖 Study History</h3><div id="pf-shist"></div></div>
+    <button onclick="logout()" class="btn btn-danger" style="width:100%;padding:13px;">🚪 Logout</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const API = "https://ox-bridge-learning.onrender.com";
+let CU=null, TK=null;
+let qData=[], qIdx=0, qScore=0, qTimer=null, qSec=30;
+let qSubj="", qLevel="", qTopic="";
+let pqExam="WAEC", kidsLevel="Primary", ws=null;
+let sessionInterval=null, questionCount=0;
+
+// ============================================================
+// PWA — SERVICE WORKER (inline registration)
+// ============================================================
+if('serviceWorker' in navigator){
+  const swCode=`
+    const CACHE='oxbridge-v2';
+    const ASSETS=['/','https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&family=Fredoka+One&family=Playfair+Display:wght@600;700&display=swap'];
+    self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS).catch(()=>{})));self.skipWaiting();});
+    self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(c=>c!==CACHE).map(c=>caches.delete(c)))));self.clients.claim();});
+    self.addEventListener('fetch',e=>{
+      if(e.request.url.includes('ox-bridge-learning.onrender.com')){return;}
+      e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));
+    });
+  `;
+  const blob=new Blob([swCode],{type:'application/javascript'});
+  const swUrl=URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).then(()=>console.log('[PWA] Service Worker registered')).catch(e=>console.log('[PWA] SW failed:',e));
+}
+
+// PWA INSTALL PROMPT
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault(); deferredPrompt=e;
+  setTimeout(()=>{
+    const b=document.getElementById('install-banner');
+    if(b) b.style.display='flex';
+  },3000);
+});
+document.getElementById('install-btn')?.addEventListener('click',async()=>{
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const res=await deferredPrompt.userChoice;
+  if(res.outcome==='accepted') toast('📱 Ox-Bridge installed on your device!','success');
+  deferredPrompt=null;
+  dismissInstall();
+});
+window.addEventListener('appinstalled',()=>{toast('📱 Ox-Bridge installed successfully!','success');dismissInstall();});
+function dismissInstall(){const b=document.getElementById('install-banner');if(b)b.style.display='none';}
+
+// ============================================================
+// DARK / LIGHT MODE
+// ============================================================
+function toggleTheme(){
+  const html=document.documentElement;
+  const isDark=html.getAttribute('data-theme')==='dark';
+  const newTheme=isDark?'light':'dark';
+  html.setAttribute('data-theme',newTheme);
+  localStorage.setItem('ox-theme',newTheme);
+  const icon=isDark?'☀️':'🌙';
+  document.getElementById('theme-btn').textContent=icon;
+  const mobBtn=document.getElementById('theme-btn-mob');
+  if(mobBtn) mobBtn.textContent=icon;
+  document.getElementById('theme-meta').setAttribute('content',isDark?'#ffffff':'#6c63ff');
+  toast(`${isDark?'☀️ Light':'🌙 Dark'} mode activated`,'info');
+}
+function loadTheme(){
+  const saved=localStorage.getItem('ox-theme')||'dark';
+  document.documentElement.setAttribute('data-theme',saved);
+  const icon=saved==='light'?'☀️':'🌙';
+  const btn=document.getElementById('theme-btn');
+  if(btn) btn.textContent=icon;
+  const mobBtn=document.getElementById('theme-btn-mob');
+  if(mobBtn) mobBtn.textContent=icon;
+}
+
+// ============================================================
+// STARTUP
+// ============================================================
+window.onload=async function(){
+  loadTheme();
+  makeParticles();
+  TK=localStorage.getItem("ox_token");
+  CU=localStorage.getItem("ox_user");
+  if(TK&&CU){
+    try{
+      const r=await fetch(`${API}/validate-token`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token:TK})});
+      const d=await r.json();
+      if(r.ok&&d.valid){updateStats(d.score,d.streak,d.coins);bootApp();return;}
+    }catch(e){bootApp();return;}
+    clearAuth();
+  }
+  hideSplash(); go("page-landing");
+  document.getElementById("li-pass").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
+  document.getElementById("su-conf").addEventListener("keydown",e=>{if(e.key==="Enter")doSignup();});
+  document.getElementById("ac-msg").addEventListener("keydown",e=>{if(e.key==="Enter")sendChat();});
+  document.getElementById("cl-inp").addEventListener("keydown",e=>{if(e.key==="Enter")sendMsg();});
+  document.getElementById("s-query").addEventListener("keydown",e=>{if(e.key==="Enter")doSearch();});
+  checkBP(); window.addEventListener("resize",checkBP);
+};
+
+function hideSplash(){document.getElementById("app-loading").style.display="none";}
+function bootApp(){
+  hideSplash();
+  document.getElementById("navbar").style.display="flex";
+  document.getElementById("n-user").textContent=CU;
+  go("page-dashboard"); loadNotifCount();
+}
+function clearAuth(){localStorage.removeItem("ox_token");localStorage.removeItem("ox_user");TK=CU=null;}
+function checkBP(){
+  const mob=window.innerWidth<=768;
+  document.querySelectorAll(".show-m").forEach(el=>el.style.display=mob?"flex":"none");
+  document.querySelectorAll(".hide-m").forEach(el=>el.style.display=mob?"none":"flex");
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function go(id){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  const p=document.getElementById(id);if(p){p.classList.add("active");window.scrollTo(0,0);}
+  if(id==="page-dashboard")   loadDashboard();
+  if(id==="page-leaderboard") loadLeaderboard();
+  if(id==="page-profile")     loadProfile();
+  if(id==="page-subjects")    initSubjects();
+  if(id==="page-aichat")      {loadChatHistory();startSession();}
+  closeMob();
+}
+function nav(id){go(id);}
+function goHome(){go(CU?"page-dashboard":"page-landing");}
+function toggleMob(){const m=document.getElementById("mob-menu");m.style.display=m.style.display==="block"?"none":"block";}
+function closeMob(){document.getElementById("mob-menu").style.display="none";}
+
+// ============================================================
+// TOAST
+// ============================================================
+function toast(msg,type="info"){
+  const c={success:"#00e5a0",error:"#ff4f6a",warning:"#ffb830",info:"#6c63ff"};
+  const i={success:"✅",error:"❌",warning:"⚠️",info:"ℹ️"};
+  const t=document.createElement("div");t.className="toast";t.style.borderColor=c[type];
+  t.innerHTML=`<span style="font-size:18px;">${i[type]}</span><span>${msg}</span>`;
+  document.getElementById("toasts").appendChild(t);
+  setTimeout(()=>{t.style.opacity="0";t.style.transition="opacity .4s";setTimeout(()=>t.remove(),400);},3500);
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+function togglePwd(id,el){const i=document.getElementById(id);i.type=i.type==="password"?"text":"password";el.textContent=i.type==="password"?"👁":"🙈";}
+function showErr(id,msg){const e=document.getElementById(id);e.textContent=msg;e.style.display="block";}
+function hideErr(id){document.getElementById(id).style.display="none";}
+function setBtnLoad(id,on,txt=""){const b=document.getElementById(id);b.disabled=on;if(on){b.dataset.orig=b.textContent;b.textContent=txt||"Loading...";}else{b.textContent=b.dataset.orig||b.textContent;}}
+function updateStats(score,streak,coins){
+  ["n-score","m-score"].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=score||0;});
+  ["n-streak","m-streak"].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=streak||0;});
+  ["n-coins","m-coins"].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=coins||0;});
+}
+function hdrs(){return{"Content-Type":"application/json","Authorization":"Bearer "+(TK||"")};}
+function timeAgo(iso){if(!iso)return"";const d=(Date.now()-new Date(iso).getTime())/1000;if(d<60)return"just now";if(d<3600)return`${Math.floor(d/60)}m ago`;if(d<86400)return`${Math.floor(d/3600)}h ago`;return`${Math.floor(d/86400)}d ago`;}
+
+// ============================================================
+// AUTH
+// ============================================================
+async function doSignup(){
+  hideErr("su-err");
+  const username=document.getElementById("su-user").value.trim();
+  const email=document.getElementById("su-email").value.trim();
+  const password=document.getElementById("su-pass").value;
+  const confirm=document.getElementById("su-conf").value;
+  if(username.length<3)return showErr("su-err","Username must be at least 3 characters");
+  if(!email.includes("@"))return showErr("su-err","Please enter a valid email address");
+  if(password.length<6)return showErr("su-err","Password must be at least 6 characters");
+  if(password!==confirm)return showErr("su-err","Passwords do not match");
+  setBtnLoad("su-btn",true,"Creating...");
+  try{
+    const r=await fetch(`${API}/signup`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username,email,password})});
+    const d=await r.json();
+    if(r.ok){toast("Account created! Please login 🎉","success");setTimeout(()=>go("page-login"),1200);}
+    else showErr("su-err",d.detail||"Signup failed. Try again.");
+  }catch(e){showErr("su-err","Connection error. Check your internet.");}
+  finally{setBtnLoad("su-btn",false);}
+}
+
+async function doLogin(){
+  hideErr("li-err");
+  const username=document.getElementById("li-user").value.trim();
+  const password=document.getElementById("li-pass").value.trim();
+  if(!username)return showErr("li-err","Please enter your username");
+  if(!password)return showErr("li-err","Please enter your password");
+  setBtnLoad("li-btn",true,"Logging in...");
+  try{
+    const r=await fetch(`${API}/login`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username,password})});
+    const d=await r.json();
+    if(r.ok){
+      TK=d.access_token;CU=d.username||username;
+      localStorage.setItem("ox_token",TK);localStorage.setItem("ox_user",CU);
+      updateStats(d.score,d.streak,d.coins);
+      toast(`Welcome back, ${CU}! 🎉`,"success");bootApp();
+    }else{
+      const card=document.getElementById("login-card");
+      card.style.animation="shake .4s ease";setTimeout(()=>card.style.animation="",500);
+      showErr("li-err",d.detail||"Login failed. Please try again.");
+    }
+  }catch(e){showErr("li-err","Connection failed. Check your internet.");}
+  finally{setBtnLoad("li-btn",false);}
+}
+
+function logout(){
+  clearAuth();document.getElementById("navbar").style.display="none";
+  if(ws){ws.close();ws=null;}if(sessionInterval)clearInterval(sessionInterval);
+  go("page-landing");toast("Logged out successfully","info");
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+async function loadDashboard(){
+  if(!CU)return;
+  const h=new Date().getHours();
+  const g=h<12?"Good morning":h<17?"Good afternoon":"Good evening";
+  document.getElementById("greeting").innerHTML=`${g}, <span style="color:var(--accent2);">${CU}</span>! ☀️`;
+  try{
+    const r=await fetch(`${API}/profile/${CU}`,{headers:hdrs()});const d=await r.json();
+    if(r.ok){
+      document.getElementById("ds-score").textContent=d.score||0;
+      document.getElementById("ds-streak").textContent=d.streak||0;
+      document.getElementById("ds-coins").textContent=d.coins||0;
+      updateStats(d.score,d.streak,d.coins);
+      const bEl=document.getElementById("ds-badges");
+      if(d.badges&&d.badges.length>0){bEl.innerHTML=d.badges.slice(0,5).map(b=>`<div title="${b.name}" style="font-size:1.8rem;cursor:pointer;" onclick="go('page-profile')">${b.icon}</div>`).join("");}
+      else{bEl.innerHTML=`<p style="color:var(--muted);font-size:12px;">Complete quizzes to earn badges!</p>`;}
+    }
+  }catch(e){}
+  try{const r=await fetch(`${API}/quiz/stats/${CU}`,{headers:hdrs()});const d=await r.json();if(r.ok)document.getElementById("ds-quizzes").textContent=d.total_quizzes||0;}catch(e){}
+  loadDailyChallenge();
+}
+
+async function loadDailyChallenge(){
+  const el=document.getElementById("dc-area");
+  el.innerHTML=`<p style="color:var(--muted);font-size:13px;">Loading today's challenge...</p>`;
+  try{
+    const r=await fetch(`${API}/daily-challenge`);const d=await r.json();
+    if(r.ok&&d.question_text){
+      el.innerHTML=`<p style="font-size:.95rem;line-height:1.6;margin-bottom:14px;font-weight:600;">${d.question_text}</p>${["A","B","C","D"].map(o=>`<button onclick="submitDC('${o}',${d.id})" class="opt">${o}) ${d["option_"+o.toLowerCase()]||""}</button>`).join("")}`;
+    }else{el.innerHTML=`<p style="color:var(--muted);font-size:13px;">No challenge today. Check back soon!</p>`;}
+  }catch(e){el.innerHTML=`<p style="color:var(--muted);font-size:13px;">Could not load daily challenge.</p>`;}
+}
+
+async function submitDC(answer){
+  document.querySelectorAll("#dc-area .opt").forEach(b=>b.disabled=true);
+  try{
+    const r=await fetch(`${API}/daily-challenge/submit`,{method:"POST",headers:hdrs(),body:JSON.stringify({username:CU,answer})});
+    const d=await r.json();
+    if(d.already_attempted){toast("Already attempted today! Come back tomorrow 📅","warning");}
+    else if(d.correct){toast(`✅ Correct! +${d.points_earned} points & +${d.coins_earned} coins 🔥`,"success");}
+    else{toast(`❌ Wrong! Correct answer: ${d.correct_answer}`,"error");}
+  }catch(e){toast("Could not submit","error");}
+}
+
+// ============================================================
+// SUBJECTS
+// ============================================================
+const LEVELS=["Nursery","Primary","JSS","SSS","WAEC","JAMB","University"];
+const SICONS={Mathematics:"📐",Physics:"⚛️",Chemistry:"⚗️",Biology:"🔬","English Language":"📖",Literature:"📜",History:"🏛",Government:"⚖️",Economics:"📊",Commerce:"🏪",Geography:"🌍","Agricultural Science":"🌾","Computer Science":"💻",CRS:"✝️",Yoruba:"🗣",Igbo:"🗣",Hausa:"🗣",French:"🇫🇷","Home Economics":"🏠","Food & Nutrition":"🍽","Fine Art":"🎨",Music:"🎵","Physical Education":"⚽","Technical Drawing":"📏","Further Mathematics":"∑",IRS:"☪️"};
+const SLIST=Object.keys(SICONS);
+let activeLevel="SSS";
+
+function initSubjects(){
+  document.getElementById("level-tabs").innerHTML=LEVELS.map(l=>`<button onclick="setLevel('${l}',this)" class="ltab ${l===activeLevel?"active":""}">${l}</button>`).join("");
+  renderSubjects();
+}
+function setLevel(l,el){activeLevel=l;document.querySelectorAll(".ltab").forEach(b=>b.classList.remove("active"));el.classList.add("active");renderSubjects();}
+function renderSubjects(){
+  document.getElementById("subjects-grid").innerHTML=SLIST.map(s=>`
+    <div class="card card-hover"><div style="font-size:2rem;margin-bottom:8px;">${SICONS[s]||"📚"}</div><h3 style="font-family:'Syne',sans-serif;font-size:14px;margin-bottom:10px;">${s}</h3>
+    <div style="display:flex;gap:8px;"><button onclick="openLearn('${s}','${activeLevel}')" class="btn btn-primary" style="flex:1;padding:7px;font-size:12px;">Learn</button><button onclick="openQuiz('${s}','${activeLevel}')" class="btn btn-outline" style="flex:1;padding:7px;font-size:12px;">Quiz</button></div></div>
+  `).join("");
+}
+function openLearn(s,l){document.getElementById("l-subj").value=s;document.getElementById("l-level").value=l;go("page-learn");}
+function openQuiz(s,l){document.getElementById("qz-subj").value=s;document.getElementById("qz-level").value=l;go("page-quiz");}
+
+// ============================================================
+// LEARN
+// ============================================================
+async function doLearn(){
+  const topic=document.getElementById("l-topic").value.trim();
+  const subj=document.getElementById("l-subj").value.trim()||"General";
+  const level=document.getElementById("l-level").value;
+  if(!topic)return toast("Please enter a topic to learn","warning");
+  document.getElementById("l-result").style.display="none";
+  document.getElementById("l-loading").style.display="block";
+  setBtnLoad("l-btn",true,"✨ Teaching...");
+  try{
+    const r=await fetch(`${API}/learn/${encodeURIComponent(topic)}?username=${encodeURIComponent(CU)}&level=${encodeURIComponent(level)}&subject=${encodeURIComponent(subj)}`);
+    const d=await r.json();
+    document.getElementById("l-loading").style.display="none";
+    if(r.ok){document.getElementById("l-title").textContent=`${topic} — ${subj} (${level})`;document.getElementById("l-text").textContent=d.lesson;document.getElementById("l-result").style.display="block";}
+    else{toast("Could not load lesson. Try again.","error");}
+  }catch(e){document.getElementById("l-loading").style.display="none";toast("Connection error","error");}
+  finally{setBtnLoad("l-btn",false);}
+}
+async function logStudy(){
+  const topic=document.getElementById("l-topic").value.trim();
+  const subj=document.getElementById("l-subj").value.trim()||"General";
+  const level=document.getElementById("l-level").value;
+  try{const r=await fetch(`${API}/study/log`,{method:"POST",headers:hdrs(),body:JSON.stringify({username:CU,topic,subject:subj,level})});const d=await r.json();if(r.ok)toast(`📝 Study logged! Streak: ${d.streak} days 🔥`,"success");}catch(e){toast("Could not log session","error");}
+}
+function goQuizFromLearn(){document.getElementById("qz-topic").value=document.getElementById("l-topic").value;document.getElementById("qz-subj").value=document.getElementById("l-subj").value;document.getElementById("qz-level").value=document.getElementById("l-level").value;go("page-quiz");}
+
+// ============================================================
+// QUIZ
+// ============================================================
+async function startQuiz(){
+  qSubj=document.getElementById("qz-subj").value.trim()||"General";
+  qLevel=document.getElementById("qz-level").value;
+  qTopic=document.getElementById("qz-topic").value.trim()||qSubj;
+  setBtnLoad("qz-btn",true,"🧠 Generating...");
+  try{
+    const r=await fetch(`${API}/quiz/${encodeURIComponent(qTopic)}?level=${encodeURIComponent(qLevel)}&subject=${encodeURIComponent(qSubj)}`);
+    const d=await r.json();
+    if(r.ok&&Array.isArray(d.quiz)&&d.quiz.length>0){
+      qData=d.quiz;qIdx=0;qScore=0;
+      document.getElementById("qz-setup").style.display="none";
+      document.getElementById("qz-active").style.display="block";
+      document.getElementById("qz-results").style.display="none";
+      renderQ();
+    }else{toast("Could not generate quiz. Try again.","error");}
+  }catch(e){toast("Connection error","error");}
+  finally{setBtnLoad("qz-btn",false);}
+}
+function renderQ(){
+  if(qIdx>=qData.length){showResults();return;}
+  const q=qData[qIdx];
+  document.getElementById("qz-counter").textContent=`Q ${qIdx+1}/${qData.length}`;
+  document.getElementById("qz-live").textContent=qScore;
+  document.getElementById("qz-q").textContent=q.question;
+  document.getElementById("qz-expl").style.display="none";
+  document.getElementById("qz-next").style.display="none";
+  document.getElementById("qz-opts").innerHTML=(q.options||[]).map((o,i)=>`<button class="opt" onclick="answerQ(${i},this)">${o}</button>`).join("");
+  startTimer(q.time_limit_sec||30);
+}
+function startTimer(s){
+  clearInterval(qTimer);qSec=s;
+  const fill=document.getElementById("timer-fill");
+  fill.style.width="100%";fill.style.background="var(--accent2)";
+  document.getElementById("qz-time").textContent=s;
+  qTimer=setInterval(()=>{
+    qSec--;document.getElementById("qz-time").textContent=qSec;
+    fill.style.width=(qSec/s*100)+"%";
+    if(qSec<=10)fill.style.background="var(--danger)";
+    if(qSec<=0){clearInterval(qTimer);toast("Time up! ⏱","warning");document.querySelectorAll("#qz-opts .opt").forEach(b=>b.disabled=true);document.getElementById("qz-next").style.display="block";}
+  },1000);
+}
+function answerQ(idx,btn){
+  clearInterval(qTimer);
+  const q=qData[qIdx];const opts=document.querySelectorAll("#qz-opts .opt");opts.forEach(b=>b.disabled=true);
+  const ci=["A","B","C","D"].indexOf((q.answer||"A").toUpperCase());
+  if(idx===ci){btn.classList.add("correct");qScore++;document.getElementById("qz-live").textContent=qScore;toast("✅ Correct! +5 points","success");}
+  else{btn.classList.add("wrong");if(opts[ci])opts[ci].classList.add("correct");toast("❌ Wrong answer!","error");}
+  if(q.explanation){const e=document.getElementById("qz-expl");e.textContent="💡 "+q.explanation;e.style.display="block";}
+  document.getElementById("qz-next").style.display="block";
+}
+function nextQ(){qIdx++;renderQ();}
+async function showResults(){
+  clearInterval(qTimer);
+  document.getElementById("qz-active").style.display="none";
+  document.getElementById("qz-results").style.display="block";
+  const pct=Math.round(qScore/qData.length*100);
+  document.getElementById("qz-final").textContent=`${qScore}/${qData.length} (${pct}%)`;
+  let emoji="💪",msg="Don't give up! Try again.";
+  if(pct===100){emoji="🌟";msg="Perfect Score! You're a genius!";}
+  else if(pct>=80){emoji="🔥";msg="Excellent! Keep it up!";}
+  else if(pct>=60){emoji="👍";msg="Good job! Practice more.";}
+  else if(pct>=40){emoji="📚";msg="Keep studying!";}
+  document.getElementById("qz-emoji").textContent=emoji;
+  document.getElementById("qz-msg").textContent=msg;
+  try{
+    const r=await fetch(`${API}/quiz/save-result`,{method:"POST",headers:hdrs(),body:JSON.stringify({username:CU,subject:qSubj,level:qLevel,topic:qTopic,score:qScore,total_questions:qData.length})});
+    const d=await r.json();
+    if(r.ok&&d.new_badges&&d.new_badges.length>0){document.getElementById("qz-new-badges").innerHTML=`<div style="color:var(--warn);margin-bottom:10px;font-family:'Syne',sans-serif;">🏅 New badge(s): ${d.new_badges.join(", ")}!</div>`;}
+  }catch(e){}
+}
+function retakeQuiz(){qIdx=0;qScore=0;document.getElementById("qz-results").style.display="none";document.getElementById("qz-active").style.display="block";renderQ();}
+
+// ============================================================
+// PROFESSOR AI CHAT
+// ============================================================
+function startSession(){
+  if(sessionInterval)clearInterval(sessionInterval);
+  const start=Date.now();questionCount=0;document.getElementById("q-count").textContent=0;
+  sessionInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-start)/1000);
+    const m=Math.floor(e/60).toString().padStart(2,"0");
+    const s=(e%60).toString().padStart(2,"0");
+    document.getElementById("session-time").textContent=`${m}:${s}`;
+  },1000);
+}
+
+function appendChat(role,text){
+  const box=document.getElementById("chat-box");
+  const div=document.createElement("div");div.className="chat-msg "+(role==="user"?"user":"ai");
+  if(role==="user"){div.innerHTML=`<div class="role">👤 ${CU||"YOU"}</div><div>${text}</div>`;}
+  else{div.innerHTML=`<div class="role">🎓 PROFESSOR OX-BRIDGE</div><div>${text.replace(/\n/g,"<br>")}</div>`;}
+  box.appendChild(div);box.scrollTop=box.scrollHeight;
+}
+
+async function loadChatHistory(){
+  if(!CU)return;
+  const box=document.getElementById("chat-box");
+  if(box.children.length>1)return;
+  try{
+    const r=await fetch(`${API}/ai/chat/history/${CU}`,{headers:hdrs()});const d=await r.json();
+    if(Array.isArray(d)&&d.length>0){
+      box.innerHTML="";d.forEach(h=>appendChat(h.role==="user"?"user":"ai",h.message));
+      questionCount=d.filter(h=>h.role==="user").length;
+      document.getElementById("q-count").textContent=questionCount;
+    }
+  }catch(e){}
+}
+
+function quickQ(msg){document.getElementById("ac-msg").value=msg;sendChat();}
+
+async function sendChat(){
+  const msg=document.getElementById("ac-msg").value.trim();
+  if(!msg)return;
+  const subj=document.getElementById("ac-subj").value.trim()||"General";
+  const level=document.getElementById("ac-level").value;
+  appendChat("user",msg);
+  document.getElementById("ac-msg").value="";
+  questionCount++;document.getElementById("q-count").textContent=questionCount;
+  const typing=document.createElement("div");typing.className="chat-msg ai";typing.id="typing";
+  typing.innerHTML=`<div class="role">🎓 PROFESSOR OX-BRIDGE</div><div style="animation:pulse 1s infinite;color:var(--muted);">The Professor is formulating a response...</div>`;
+  document.getElementById("chat-box").appendChild(typing);
+  document.getElementById("chat-box").scrollTop=99999;
+  try{
+    const r=await fetch(`${API}/ai/chat`,{method:"POST",headers:hdrs(),body:JSON.stringify({username:CU,message:msg,subject:subj,level})});
+    const d=await r.json();
+    document.getElementById("typing")?.remove();
+    appendChat("ai",d.response||"I apologise — I was unable to retrieve a response. Please try again.");
+  }catch(e){document.getElementById("typing")?.remove();appendChat("ai","I apologise — there appears to be a connection issue. Please try again.");}
+}
+
+async function clearChatHistory(){
+  if(!confirm("Start a new session? This will clear your chat history."))return;
+  try{
+    await fetch(`${API}/ai/chat/clear`,{method:"POST",headers:hdrs(),body:JSON.stringify({username:CU})});
+    document.getElementById("chat-box").innerHTML=`<div class="chat-msg ai"><div class="role">🎓 PROFESSOR OX-BRIDGE</div><div>Good day! A new session has begun. What shall we explore today?</div></div>`;
+    questionCount=0;document.getElementById("q-count").textContent=0;startSession();toast("New session started","success");
+  }catch(e){toast("Error clearing chat","error");}
+}
+
+// ============================================================
+// SEARCH
+// ============================================================
+function quickSearch(q){document.getElementById("s-query").value=q;doSearch();}
+function openYouTube(){
+  const q=document.getElementById("yt-query").value.trim();
+  if(!q)return toast("Please enter a search term","warning");
+  window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(q+" Nigeria education")}`, "_blank");
+  toast("Opening YouTube search...","info");
+}
+async function doSearch(){
+  const query=document.getElementById("s-query").value.trim();
+  if(!query)return toast("Please enter a search term","warning");
+  document.getElementById("s-results").style.display="none";
+  document.getElementById("s-empty").style.display="none";
+  document.getElementById("s-loading").style.display="block";
+  setBtnLoad("s-btn",true,"Searching...");
+  try{
+    const r=await fetch(`${API}/search/web/${encodeURIComponent(query)}`);const d=await r.json();
+    document.getElementById("s-loading").style.display="none";
+    if(d.error||!d.results||d.results.length===0){document.getElementById("s-empty").style.display="block";return;}
+    document.getElementById("s-results-title").textContent=`Results for "${query}"`;
+    document.getElementById("s-results-list").innerHTML=d.results.map(r=>`
+      <div class="search-result" onclick="window.open('${r.url}','_blank')">
+        <a href="${r.url}" target="_blank" onclick="event.stopPropagation()">${r.title}</a>
+        <p style="color:var(--muted);font-size:12px;margin-top:6px;line-height:1.6;">${r.snippet}</p>
+        <p style="color:var(--accent);font-size:11px;margin-top:6px;">${r.url.substring(0,60)}${r.url.length>60?"...":""}</p>
+      </div>
+    `).join("")+`
+      <div class="search-result" onclick="window.open('https://www.youtube.com/results?search_query=${encodeURIComponent(query+" tutorial")}','_blank')" style="border-color:rgba(255,68,68,.3);">
+        <div style="display:flex;align-items:center;gap:12px;"><div style="font-size:2rem;color:#ff4444;">▶</div><div><div style="font-family:'Syne',sans-serif;font-weight:700;color:#ff4444;">Watch on YouTube</div><div style="color:var(--muted);font-size:13px;">Find video explanations for "${query}"</div></div></div>
+      </div>
+    `;
+    document.getElementById("s-results").style.display="block";
+  }catch(e){document.getElementById("s-loading").style.display="none";toast("Search failed. Check your internet.","error");}
+  finally{setBtnLoad("s-btn",false);}
+}
+
+// ============================================================
+// PAST QUESTIONS
+// ============================================================
+function setPQExam(exam,el){
+  pqExam=exam;
+  document.getElementById("pq-w").className="btn "+(exam==="WAEC"?"btn-primary":"btn-outline");
+  document.getElementById("pq-j").className="btn "+(exam==="JAMB"?"btn-primary":"btn-outline");
+}
+async function loadPQ(){
+  const subj=document.getElementById("pq-subj").value.trim();
+  if(!subj)return toast("Please enter a subject","warning");
+  document.getElementById("pq-display").style.display="none";
+  document.getElementById("pq-loading").style.display="block";
+  document.getElementById("pq-next").style.display="none";
+  try{
+    const r=await fetch(`${API}/past-questions/random/${encodeURIComponent(subj)}?exam=${pqExam}`);const d=await r.json();
+    document.getElementById("pq-loading").style.display="none";
+    const q=d.question;if(!q)return toast("No questions found. Try another subject.","warning");
+    document.getElementById("pq-b1").textContent=pqExam;
+    document.getElementById("pq-b2").textContent=q.year?`Year: ${q.year}`:"AI Generated";
+    document.getElementById("pq-q").textContent=q.question_text;
+    document.getElementById("pq-expl").style.display="none";
+    document.getElementById("pq-opts").innerHTML=["a","b","c","d"].map(o=>`<button class="opt" onclick="answerPQ('${o.toUpperCase()}','${(q.correct_answer||"A").toUpperCase()}','${(q.explanation||"").replace(/'/g,"\\'")}',this)">${o.toUpperCase()}) ${q["option_"+o]||""}</button>`).join("");
+    document.getElementById("pq-display").style.display="block";
+  }catch(e){document.getElementById("pq-loading").style.display="none";toast("Failed to load question","error");}
+}
+function answerPQ(sel,correct,expl,btn){
+  document.querySelectorAll("#pq-opts .opt").forEach(b=>b.disabled=true);
+  if(sel===correct){btn.classList.add("correct");toast("✅ Correct!","success");}
+  else{btn.classList.add("wrong");const map={A:0,B:1,C:2,D:3};const btns=document.querySelectorAll("#pq-opts .opt");if(btns[map[correct]])btns[map[correct]].classList.add("correct");toast(`❌ Wrong! Correct: ${correct}`,"error");}
+  if(expl){const e=document.getElementById("pq-expl");e.textContent="💡 "+expl;e.style.display="block";}
+  document.getElementById("pq-next").style.display="block";
+}
+
+// ============================================================
+// KIDS ZONE — ALL 9 GAMES
+// ============================================================
+function setKL(level,el){kidsLevel=level;document.querySelectorAll("#kids-lvl button").forEach(b=>b.style.opacity=".5");el.style.opacity="1";}
+function showKG(title,html){
+  const a=document.getElementById("kids-area");
+  document.getElementById("kids-content").innerHTML=`<h3 style="font-family:'Fredoka One',cursive;font-size:1.3rem;margin-bottom:16px;color:#ffd93d;">${title}</h3>${html}`;
+  a.style.display="block";a.scrollIntoView({behavior:"smooth"});
+}
+
+const SPELLING_WORDS={
+  Nursery:[{word:"CAT",hint:"A pet that says meow"},{word:"DOG",hint:"Man's best friend"},{word:"SUN",hint:"It shines in the sky"},{word:"EGG",hint:"A hen lays this"}],
+  Primary:[{word:"BOOK",hint:"You read this at school"},{word:"TREE",hint:"Has leaves and roots"},{word:"FISH",hint:"Lives in water"},{word:"RAIN",hint:"Falls from clouds"}],
+  JSS:[{word:"MARKET",hint:"Where goods are sold"},{word:"BRIDGE",hint:"Connects two sides over water"},{word:"FLOWER",hint:"Plants produce this colorful thing"},{word:"JUNGLE",hint:"A dense tropical forest"}]
+};
+const RIDDLES=[
+  {q:"I have hands but cannot clap. I have a face but no eyes. What am I?",a:"A clock",hint:"You use it to tell time"},
+  {q:"I am always in front of you but cannot be seen. What am I?",a:"The future",hint:"Think about time"},
+  {q:"The more you take, the more you leave behind. What am I?",a:"Footsteps",hint:"Think about walking"},
+  {q:"What has keys but no locks, space but no room?",a:"A keyboard",hint:"Used with a computer"},
+  {q:"In Nigeria, what city is the capital?",a:"Abuja",hint:"It is in the North-Central region"},
+  {q:"I speak without a mouth and hear without ears. What am I?",a:"An echo",hint:"In mountains or caves"},
+];
+const PHONICS_WORDS=[
+  {word:"RAIN",letters:["R","A","I","N","S","T"],hint:"Water from sky"},
+  {word:"PLAY",letters:["P","L","A","Y","Z","K"],hint:"What kids do for fun"},
+  {word:"BOOK",letters:["B","O","O","K","X","T"],hint:"You read this"},
+  {word:"FISH",letters:["F","I","S","H","M","Q"],hint:"Lives in water"},
+];
+const TRIVIA=[
+  {q:"What is the capital city of Nigeria?",options:["Lagos","Abuja","Kano","Ibadan"],a:1},
+  {q:"What currency does Nigeria use?",options:["Cedi","Naira","Rand","Franc"],a:1},
+  {q:"In what year did Nigeria gain independence?",options:["1957","1960","1963","1966"],a:1},
+  {q:"What is Nigeria's largest city?",options:["Abuja","Kano","Ibadan","Lagos"],a:3},
+  {q:"Which ocean borders Nigeria to the south?",options:["Indian","Atlantic","Pacific","Arctic"],a:1},
+];
+const EMOJIS=["🐶","🐱","🐭","🐹","🐸","🦊","🐻","🐼","🦁","🐯","🐨","🐙"];
+
+// Game router
+async function showKidsGame(type){
+  switch(type){
+    case"scramble": await kWordScramble();break;
+    case"spelling": kSpellingBee();break;
+    case"math": await kMath();break;
+    case"memory": kMemoryCards();break;
+    case"times": kTimesTables();break;
+    case"riddles": kRiddles();break;
+    case"phonics": kPhonics();break;
+    case"treasure": await kTreasure();break;
+    case"trivia": kTrivia();break;
+  }
+}
+
+// 1. Word Scramble
+async function kWordScramble(){
+  showKG("🔤 Word Scramble","<p style='color:rgba(255,255,255,.7);'>Loading...</p>");
+  try{
+    const r=await fetch(`${API}/games/word-scramble/English?level=${kidsLevel}`);const d=await r.json();
+    if(d.error)return showKG("🔤 Word Scramble","<p style='color:#ff6b6b;'>Could not load. Try again.</p>");
+    showKG("🔤 Word Scramble",`
+      <p style="color:rgba(255,255,255,.7);margin-bottom:6px;">Meaning: ${d.meaning||d.hint||""}</p>
+      <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">${(d.scrambled||"").split("").map(c=>`<div style="width:48px;height:48px;background:rgba(255,255,255,.1);border:2px solid #ffd93d;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-family:'Fredoka One',cursive;color:#ffd93d;">${c}</div>`).join("")}</div>
+      <input id="kw-ans" class="inp" placeholder="Type the word..." style="max-width:280px;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3);color:white;">
+      <br><button onclick="checkKW('${d.word||""}')" class="btn" style="background:#ffd93d;color:#000;margin-top:8px;font-family:'Fredoka One',cursive;">Check ✓</button>
+      <div id="kw-res" style="margin-top:12px;"></div>
+      <button onclick="kWordScramble()" class="btn" style="background:rgba(255,255,255,.1);color:white;margin-top:8px;font-size:13px;">Next Word →</button>
+    `);
+  }catch(e){toast("Could not load game","error");}
+}
+function checkKW(word){
+  const a=document.getElementById("kw-ans")?.value.trim().toUpperCase();
+  const r=document.getElementById("kw-res");
+  if(a===word.toUpperCase()){r.innerHTML=`<p style="color:#6bcb77;font-family:'Fredoka One',cursive;font-size:1.3rem;">🎉 Correct! The word is "${word}"</p>`;saveKS("word_scramble",10);}
+  else{r.innerHTML=`<p style="color:#ff6b6b;">❌ Try again! (${word.length} letters)</p>`;}
+}
+
+// 2. Spelling Bee
+let spellIdx=0,spellScore=0,spellWords=[];
+function kSpellingBee(){
+  const lv=kidsLevel==="Nursery"?"Nursery":kidsLevel==="Primary"?"Primary":"JSS";
+  spellWords=SPELLING_WORDS[lv]||SPELLING_WORDS.Primary;spellIdx=0;spellScore=0;nextSpell();
+}
+function nextSpell(){
+  if(spellIdx>=spellWords.length){showKG("🐝 Spelling Bee",`<div style="text-align:center;padding:20px;"><div style="font-size:3rem;">🎉</div><div style="font-family:'Fredoka One',cursive;font-size:2rem;color:#ffd93d;">Score: ${spellScore}/${spellWords.length}</div><button onclick="kSpellingBee()" class="btn" style="background:#ffd93d;color:#000;margin-top:12px;font-family:'Fredoka One',cursive;">Play Again!</button></div>`);saveKS("spell_challenge",spellScore*10);return;}
+  const w=spellWords[spellIdx];
+  showKG("🐝 Spelling Bee",`
+    <p style="color:rgba(255,255,255,.6);font-size:12px;margin-bottom:8px;">${spellIdx+1} of ${spellWords.length} | Score: ${spellScore}</p>
+    <div style="font-family:'Fredoka One',cursive;font-size:1.5rem;color:#ffd93d;text-align:center;margin:20px 0;">${w.hint}</div>
+    <p style="color:rgba(255,255,255,.7);margin-bottom:16px;text-align:center;">Spell this word correctly!</p>
+    <input id="spell-inp" class="inp" style="max-width:280px;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3);color:white;text-align:center;font-size:1.2rem;letter-spacing:4px;text-transform:uppercase;" placeholder="Type the word..." autocomplete="off" autocorrect="off" spellcheck="false">
+    <br><button onclick="checkSpell('${w.word}')" class="btn" style="background:#ffd93d;color:#000;margin-top:10px;font-family:'Fredoka One',cursive;">Submit ✓</button>
+    <div id="spell-res" style="margin-top:12px;"></div>
+  `);
+}
+function checkSpell(word){
+  const a=document.getElementById("spell-inp")?.value.trim().toUpperCase();const r=document.getElementById("spell-res");
+  if(a===word){r.innerHTML=`<p style="color:#6bcb77;font-family:'Fredoka One',cursive;font-size:1.3rem;">🎉 Correct!</p>`;spellScore++;spellIdx++;setTimeout(nextSpell,1200);}
+  else{r.innerHTML=`<p style="color:#ff6b6b;">❌ Correct: <strong style="color:#ffd93d;">${word}</strong></p>`;spellIdx++;setTimeout(nextSpell,1800);}
+}
+
+// 3. Math Challenge
+async function kMath(){
+  showKG("➕ Math Challenge","<p style='color:rgba(255,255,255,.7);'>Loading...</p>");
+  try{
+    const r=await fetch(`${API}/games/math-challenge/${kidsLevel}`);const d=await r.json();
+    showKG("➕ Math Challenge",`
+      <div style="background:rgba(255,255,255,.08);border-radius:14px;padding:20px;margin-bottom:16px;text-align:center;"><p style="font-size:1.5rem;font-family:'Fredoka One',cursive;color:#ffd93d;">${d.question||""}</p><p style="color:rgba(255,255,255,.5);font-size:12px;">Difficulty: ${d.difficulty||"medium"}</p></div>
+      <input id="km-ans" class="inp" type="text" placeholder="Your answer..." style="max-width:200px;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3);color:white;text-align:center;font-size:1.2rem;" autocomplete="off">
+      <br><button onclick="checkKM('${(d.answer||"").replace(/'/g,"\\'")}')" class="btn" style="background:#6bcb77;color:#000;margin-top:8px;font-family:'Fredoka One',cursive;">Submit ✓</button>
+      <div id="km-res" style="margin-top:12px;"></div>
+      <div id="km-steps" style="display:none;margin-top:12px;background:rgba(255,255,255,.05);border-radius:10px;padding:12px;font-size:13px;color:rgba(255,255,255,.7);">${d.solution_steps||""}</div>
+      <button onclick="kMath()" class="btn" style="background:rgba(255,255,255,.1);color:white;margin-top:10px;font-size:13px;">Next Problem →</button>
+    `);
+  }catch(e){toast("Could not load","error");}
+}
+function checkKM(ans){
+  const a=document.getElementById("km-ans")?.value.trim();const r=document.getElementById("km-res");
+  if(a.toLowerCase()===ans.toLowerCase()||a===ans){r.innerHTML=`<p style="color:#6bcb77;font-family:'Fredoka One',cursive;font-size:1.3rem;">🎉 Correct!</p>`;saveKS("math_challenge",10);}
+  else{r.innerHTML=`<p style="color:#ff6b6b;">❌ Answer: <strong style="color:#ffd93d;">${ans}</strong></p>`;const s=document.getElementById("km-steps");if(s)s.style.display="block";}
+}
+
+// 4. Memory Cards
+let memCards=[],memFlipped=[],memMatched=0,memMoves=0,memLock=false;
+function kMemoryCards(){
+  const pairs=EMOJIS.slice(0,8);memCards=[...pairs,...pairs].sort(()=>Math.random()-.5);
+  memFlipped=[];memMatched=0;memMoves=0;memLock=false;
+  showKG("🃏 Match Pairs",`
+    <p style="color:rgba(255,255,255,.7);margin-bottom:14px;">Find all matching pairs! Moves: <span id="mem-moves">0</span> | Pairs: <span id="mem-matched">0</span>/8</p>
+    <div class="memory-grid" id="mem-grid">${memCards.map((_,i)=>`<div class="mem-card" id="mc-${i}" onclick="flipCard(${i})">❓</div>`).join("")}</div>
+    <div id="mem-result" style="margin-top:16px;"></div>
+  `);
+}
+function flipCard(idx){
+  if(memLock||memFlipped.includes(idx)||document.getElementById(`mc-${idx}`)?.classList.contains("matched"))return;
+  const card=document.getElementById(`mc-${idx}`);if(!card)return;
+  card.textContent=memCards[idx];card.classList.add("flipped");memFlipped.push(idx);
+  if(memFlipped.length===2){
+    memMoves++;document.getElementById("mem-moves").textContent=memMoves;memLock=true;
+    const[a,b]=memFlipped;
+    if(memCards[a]===memCards[b]){
+      document.getElementById(`mc-${a}`).classList.add("matched");document.getElementById(`mc-${b}`).classList.add("matched");
+      memMatched++;document.getElementById("mem-matched").textContent=memMatched;memFlipped=[];memLock=false;
+      if(memMatched===8){setTimeout(()=>{document.getElementById("mem-result").innerHTML=`<div style="text-align:center;"><div style="font-size:2.5rem;">🏆</div><p style="font-family:'Fredoka One',cursive;font-size:1.4rem;color:#ffd93d;margin-top:8px;">Won in ${memMoves} moves!</p><button onclick="kMemoryCards()" class="btn" style="background:#ffd93d;color:#000;margin-top:12px;font-family:'Fredoka One',cursive;">Play Again!</button></div>`;saveKS("memory",Math.max(10,100-memMoves*2));},500);}
+    }else{
+      setTimeout(()=>{
+        document.getElementById(`mc-${a}`).textContent="❓";document.getElementById(`mc-${a}`).classList.remove("flipped");
+        document.getElementById(`mc-${b}`).textContent="❓";document.getElementById(`mc-${b}`).classList.remove("flipped");
+        memFlipped=[];memLock=false;
+      },1000);
+    }
+  }
+}
+
+// 5. Times Tables
+let ttNum=2,ttQ=1,ttScore=0;
+function kTimesTables(){
+  ttNum=Math.floor(Math.random()*10)+2;ttQ=1;ttScore=0;
+  showKG("✖️ Times Tables",`
+    <p style="color:rgba(255,255,255,.7);margin-bottom:14px;">Practice the <strong style="color:#ffd93d;">${ttNum}×</strong> times table!</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;margin:16px 0;">${Array.from({length:12},(_,i)=>`<div class="tt-cell" id="tt-${i+1}" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:white;">${ttNum} × ${i+1} = <span id="ttr-${i+1}">?</span></div>`).join("")}</div>
+    <div id="tt-quiz">
+      <div style="background:rgba(255,255,255,.08);border-radius:12px;padding:16px;text-align:center;margin-bottom:12px;"><p style="font-size:1.3rem;font-family:'Fredoka One',cursive;color:#ffd93d;" id="tt-question">${ttNum} × ${ttQ} = ?</p></div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <input id="tt-ans" class="inp" type="number" placeholder="Answer..." style="max-width:160px;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3);color:white;text-align:center;font-size:1.2rem;margin:0;">
+        <button onclick="checkTT()" class="btn" style="background:#a855f7;color:white;font-family:'Fredoka One',cursive;">Check ✓</button>
+      </div>
+      <div id="tt-res" style="margin-top:10px;"></div>
+      <p style="color:rgba(255,255,255,.5);font-size:12px;margin-top:8px;">Q <span id="tt-qn">1</span>/12 | Score: <span id="tt-sc">0</span></p>
+    </div>
+  `);
+  document.getElementById("tt-ans")?.addEventListener("keydown",e=>{if(e.key==="Enter")checkTT();});
+}
+function checkTT(){
+  const a=parseInt(document.getElementById("tt-ans")?.value);const correct=ttNum*ttQ;
+  const r=document.getElementById("tt-res");
+  if(a===correct){r.innerHTML=`<p style="color:#6bcb77;font-family:'Fredoka One',cursive;">🎉 Correct!</p>`;const c=document.getElementById(`ttr-${ttQ}`);if(c)c.textContent=correct;ttScore++;document.getElementById("tt-sc").textContent=ttScore;}
+  else{r.innerHTML=`<p style="color:#ff6b6b;">❌ Answer: <strong style="color:#ffd93d;">${correct}</strong></p>`;const c=document.getElementById(`ttr-${ttQ}`);if(c)c.textContent=correct;}
+  document.getElementById("tt-ans").value="";ttQ++;document.getElementById("tt-qn").textContent=ttQ;
+  if(ttQ>12){setTimeout(()=>{document.getElementById("tt-quiz").innerHTML=`<div style="text-align:center;"><div style="font-size:2.5rem;">🌟</div><p style="font-family:'Fredoka One',cursive;font-size:1.4rem;color:#ffd93d;margin-top:8px;">Score: ${ttScore}/12</p><button onclick="kTimesTables()" class="btn" style="background:#a855f7;color:white;margin-top:12px;font-family:'Fredoka One',cursive;">New Table!</button></div>`;saveKS("times_table",ttScore*5);},800);return;}
+  document.getElementById("tt-question").textContent=`${ttNum} × ${ttQ} = ?`;
+}
+
+// 6. Riddles
+let riddleIdx=0;
+function kRiddles(){riddleIdx=0;showRiddle();}
+function showRiddle(){
+  const r=RIDDLES[riddleIdx%RIDDLES.length];
+  showKG("🤔 Riddles",`
+    <div style="background:linear-gradient(135deg,rgba(108,99,255,.15),rgba(0,229,160,.05));border:1px solid rgba(108,99,255,.3);border-radius:16px;padding:24px;text-align:center;margin-bottom:16px;"><div style="font-size:2.5rem;margin-bottom:12px;">🤔</div><p style="font-size:1rem;line-height:1.7;color:white;font-style:italic;">"${r.q}"</p></div>
+    <input id="rid-ans" class="inp" placeholder="Your answer..." style="max-width:300px;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3);color:white;">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button onclick="checkRiddle('${r.a.replace(/'/g,"\\'")}')" class="btn" style="background:#f97316;color:white;font-family:'Fredoka One',cursive;">Submit Answer</button>
+      <button onclick="document.getElementById('rid-hint').style.display='block'" class="btn" style="background:rgba(255,255,255,.1);color:white;font-size:13px;">💡 Hint</button>
+      <button onclick="riddleIdx++;showRiddle()" class="btn" style="background:rgba(255,255,255,.1);color:white;font-size:13px;">Skip →</button>
+    </div>
+    <div id="rid-res" style="margin-top:12px;"></div>
+    <div id="rid-hint" style="display:none;margin-top:8px;color:rgba(255,255,255,.6);font-size:13px;">💡 Hint: ${r.hint}</div>
+  `);
+}
+function checkRiddle(answer){
+  const a=document.getElementById("rid-ans")?.value.trim().toLowerCase();const r=document.getElementById("rid-res");
+  if(a.includes(answer.toLowerCase())||answer.toLowerCase().includes(a)){r.innerHTML=`<p style="color:#6bcb77;font-family:'Fredoka One',cursive;font-size:1.2rem;">🎉 Brilliant! "${answer}"</p>`;saveKS("riddles",15);setTimeout(()=>{riddleIdx++;showRiddle();},1500);}
+  else{r.innerHTML=`<p style="color:#ff6b6b;">❌ Not quite! Try again.</p>`;}
+}
+
+// 7. Phonics / Build a Word
+let phonicsWord=null,phonicsSelected=[];
+function kPhonics(){
+  const w=PHONICS_WORDS[Math.floor(Math.random()*PHONICS_WORDS.length)];phonicsWord=w;phonicsSelected=[];
+  const shuffled=[...w.letters].sort(()=>Math.random()-.5);
+  showKG("🔡 Build a Word",`
+    <p style="color:rgba(255,255,255,.7);margin-bottom:6px;">Hint: ${w.hint}</p>
+    <p style="color:rgba(255,255,255,.5);font-size:12px;margin-bottom:16px;">The word has ${w.word.length} letters</p>
+    <div id="ph-answer" style="min-height:60px;background:rgba(255,255,255,.05);border:2px dashed rgba(255,255,255,.2);border-radius:12px;padding:10px;margin-bottom:16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;"><p id="ph-placeholder" style="color:rgba(255,255,255,.3);font-size:13px;">Click letters below to build the word...</p></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">${shuffled.map((l,i)=>`<div class="letter-tile" id="lt-${i}" onclick="selectLetter('${l}',${i})">${l}</div>`).join("")}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button onclick="checkPhonics()" class="btn" style="background:#ec4899;color:white;font-family:'Fredoka One',cursive;">Check Word ✓</button>
+      <button onclick="clearPhonics()" class="btn" style="background:rgba(255,255,255,.1);color:white;font-size:13px;">Clear</button>
+      <button onclick="kPhonics()" class="btn" style="background:rgba(255,255,255,.1);color:white;font-size:13px;">New Word →</button>
+    </div>
+    <div id="ph-res" style="margin-top:12px;"></div>
+  `);
+}
+function selectLetter(letter,idx){
+  const tile=document.getElementById(`lt-${idx}`);if(!tile||tile.classList.contains("selected"))return;
+  tile.classList.add("selected");phonicsSelected.push({letter,idx});
+  const ph=document.getElementById("ph-placeholder");if(ph)ph.style.display="none";
+  const ans=document.getElementById("ph-answer");const span=document.createElement("div");
+  span.className="letter-tile answer";span.textContent=letter;ans.appendChild(span);
+}
+function clearPhonics(){
+  phonicsSelected=[];document.querySelectorAll(".letter-tile.selected").forEach(t=>t.classList.remove("selected"));
+  const ans=document.getElementById("ph-answer");if(ans){ans.innerHTML=`<p id="ph-placeholder" style="color:rgba(255,255,255,.3);font-size:13px;">Click letters below to build the word...</p>`;}
+}
+function checkPhonics(){
+  const built=phonicsSelected.map(s=>s.letter).join("");const r=document.getElementById("ph-res");
+  if(built===phonicsWord.word){r.innerHTML=`<p style="color:#6bcb77;font-family:'Fredoka One',cursive;font-size:1.3rem;">🎉 Correct! "${phonicsWord.word}"</p>`;saveKS("phonics",15);setTimeout(kPhonics,1800);}
+  else{r.innerHTML=`<p style="color:#ff6b6b;">❌ That spells "${built||"nothing yet"}". Try again!</p>`;setTimeout(clearPhonics,1000);}
+}
+
+// 8. Treasure Hunt
+async function kTreasure(){
+  showKG("🗺️ Treasure Hunt","<p style='color:rgba(255,255,255,.7);'>Loading your adventure...</p>");
+  try{
+    const r=await fetch(`${API}/games/treasure-hunt/${kidsLevel}`);const d=await r.json();
+    showKG("🗺️ Treasure Hunt",`
+      <div style="background:rgba(255,215,0,.1);border:2px solid #ffd93d;border-radius:14px;padding:16px;margin-bottom:16px;"><p style="color:#ffd93d;margin-bottom:8px;font-family:'Fredoka One',cursive;">🗺️ Clue: ${d.clue||""}</p><p style="color:white;line-height:1.6;">${d.question||""}</p></div>
+      <input id="kt-ans" class="inp" placeholder="Your answer..." style="max-width:300px;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3);color:white;">
+      <br><button onclick="checkKT('${(d.answer||"").replace(/'/g,"\\'")}',${d.reward_coins||5})" class="btn" style="background:#14b8a6;color:white;margin-top:8px;font-family:'Fredoka One',cursive;">Find Treasure 🎁</button>
+      <div id="kt-res" style="margin-top:12px;"></div>
+      <p style="font-size:11px;color:rgba(255,255,255,.5);margin-top:8px;">💡 ${d.fun_fact||""}</p>
+    `);
+  }catch(e){toast("Could not load game","error");}
+}
+function checkKT(ans,coins){
+  const a=document.getElementById("kt-ans")?.value.trim().toLowerCase();const r=document.getElementById("kt-res");
+  if(a.includes(ans.toLowerCase())||ans.toLowerCase().includes(a)){r.innerHTML=`<p style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:#ffd93d;">🎁 Found! +${coins} coins!</p>`;saveKS("treasure_hunt",coins*2);}
+  else{r.innerHTML=`<p style="color:#ff6b6b;">❌ Keep looking! Try again.</p>`;}
+}
+
+// 9. Trivia
+let triviaIdx=0,triviaScore=0;
+function kTrivia(){triviaIdx=0;triviaScore=0;showNextTrivia();}
+function showNextTrivia(){
+  if(triviaIdx>=TRIVIA.length){showKG("❓ Fun Trivia",`<div style="text-align:center;padding:20px;"><div style="font-size:3rem;">🏆</div><p style="font-family:'Fredoka One',cursive;font-size:1.6rem;color:#ffd93d;margin-top:10px;">Score: ${triviaScore}/${TRIVIA.length}</p><button onclick="kTrivia()" class="btn" style="background:#64748b;color:white;margin-top:12px;font-family:'Fredoka One',cursive;">Play Again!</button></div>`);saveKS("trivia",triviaScore*10);return;}
+  const q=TRIVIA[triviaIdx];
+  showKG("❓ Fun Trivia",`
+    <p style="color:rgba(255,255,255,.6);font-size:12px;margin-bottom:10px;">Q${triviaIdx+1}/${TRIVIA.length} | Score: ${triviaScore}</p>
+    <div style="background:rgba(255,255,255,.05);border-radius:12px;padding:16px;margin-bottom:16px;"><p style="font-size:1rem;color:white;line-height:1.6;font-weight:600;">${q.q}</p></div>
+    ${q.options.map((o,i)=>`<button onclick="checkTrivia(${i},${q.a})" class="opt" style="border-color:rgba(255,255,255,.2);color:white;background:rgba(255,255,255,.05);">${String.fromCharCode(65+i)}) ${o}</button>`).join("")}
+    <div id="triv-res" style="margin-top:10px;"></div>
+  `);
+}
+function checkTrivia(sel,correct){
+  document.querySelectorAll("#kids-content .opt").forEach(b=>b.disabled=true);
+  const btns=document.querySelectorAll("#kids-content .opt");const r=document.getElementById("triv-res");
+  if(sel===correct){btns[sel].style.background="rgba(107,203,119,.3)";btns[sel].style.borderColor="#6bcb77";r.innerHTML=`<p style="color:#6bcb77;font-family:'Fredoka One',cursive;">🎉 Correct!</p>`;triviaScore++;}
+  else{btns[sel].style.background="rgba(255,107,107,.3)";btns[sel].style.borderColor="#ff6b6b";btns[correct].style.background="rgba(107,203,119,.3)";btns[correct].style.borderColor="#6bcb77";r.innerHTML=`<p style="color:#ff6b6b;">❌ Answer: ${String.fromCharCode(65+correct)}</p>`;}
+  triviaIdx++;setTimeout(showNextTrivia,1500);
+}
+
+async function saveKS(type,score){
+  try{await fetch(`${API}/games/save-score`,{method:"POST",headers:hdrs(),body:JSON.stringify({username:CU,game_type:type,score})});toast(`🎮 +${score} points saved!`,"success");}catch(e){}
+}
+
+// ============================================================
+// CLASSROOM
+// ============================================================
+function joinRoom(){
+  const room=document.getElementById("room-inp").value.trim();if(!room)return toast("Please enter a room name","warning");
+  document.getElementById("room-sel").style.display="none";document.getElementById("room-active").style.display="block";
+  document.getElementById("cl-room").textContent=room;
+  document.getElementById("cl-status").textContent="Connecting...";document.getElementById("cl-status").style.color="var(--warn)";
+  const wsUrl=API.replace("https://","wss://").replace("http://","ws://");
+  try{
+    ws=new WebSocket(`${wsUrl}/ws/classroom/${room}`);
+    ws.onopen=()=>{toast("Connected! 🟢","success");document.getElementById("cl-status").textContent="Connected";document.getElementById("cl-status").style.color="var(--accent2)";};
+    ws.onmessage=e=>{try{addMsg(JSON.parse(e.data));}catch(err){}};
+    ws.onclose=()=>{document.getElementById("cl-status").textContent="Reconnecting...";document.getElementById("cl-status").style.color="var(--warn)";toast("Disconnected. Reconnecting...","warning");setTimeout(()=>{if(document.getElementById("room-active").style.display!=="none")joinRoom();},3000);};
+    ws.onerror=()=>toast("Connection error","error");
+  }catch(e){toast("Could not connect","error");}
+}
+function addMsg(data){
+  const box=document.getElementById("cl-msgs");const div=document.createElement("div");div.style.marginBottom="10px";
+  if(data.type==="system"){div.innerHTML=`<div style="text-align:center;color:var(--muted);font-size:11px;font-style:italic;padding:4px 0;">${data.message}</div>`;const m=data.message.match(/(\d+) student/);if(m)document.getElementById("cl-cnt").textContent=m[1];}
+  else if(data.type==="ai"){div.innerHTML=`<div style="background:linear-gradient(135deg,rgba(108,99,255,.15),rgba(0,229,160,.08));border:1px solid rgba(108,99,255,.3);border-radius:12px;padding:14px;"><div style="color:var(--accent);font-size:11px;margin-bottom:5px;font-family:'Syne',sans-serif;">${data.username}</div><div style="font-size:13px;line-height:1.65;">${data.message}</div></div>`;}
+  else{const me=data.username===CU;div.innerHTML=`<div style="display:flex;${me?"justify-content:flex-end":""}"><div style="max-width:78%;"><div style="font-size:10px;color:var(--muted);margin-bottom:3px;${me?"text-align:right;":""}">${me?"You":data.username}</div><div style="background:${me?"var(--accent)":"var(--surface2)"};padding:10px 13px;border-radius:${me?"12px 12px 4px 12px":"12px 12px 12px 4px"};font-size:13px;line-height:1.5;">${data.message}</div></div></div>`;}
+  box.appendChild(div);box.scrollTop=box.scrollHeight;
+}
+function sendMsg(){const i=document.getElementById("cl-inp");const m=i.value.trim();if(!m)return;if(!ws||ws.readyState!==WebSocket.OPEN){toast("Not connected to classroom","warning");return;}ws.send(JSON.stringify({message:m,username:CU}));i.value="";}
+function leaveRoom(){if(ws){ws.close();ws=null;}document.getElementById("room-active").style.display="none";document.getElementById("room-sel").style.display="block";document.getElementById("cl-msgs").innerHTML="";toast("Left the classroom","info");}
+
+// ============================================================
+// LEADERBOARD
+// ============================================================
+async function loadLeaderboard(){
+  const el=document.getElementById("lb-content");el.innerHTML=`<div class="skel" style="height:200px;border-radius:16px;"></div>`;
+  try{
+    const r=await fetch(`${API}/leaderboard`);const d=await r.json();
+    if(!Array.isArray(d)||d.length===0){el.innerHTML=`<p style="color:var(--muted);">No data yet. Be the first!</p>`;return;}
+    const medals=["🥇","🥈","🥉"];
+    el.innerHTML=`<div class="card">${d.map((u,i)=>`<div style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--border);${u.username===CU?"background:rgba(108,99,255,.08);border-radius:10px;padding-left:8px;":""}"><div style="font-size:1.3rem;width:30px;text-align:center;">${medals[i]||"#"+(i+1)}</div><div style="flex:1;"><div style="font-family:'Syne',sans-serif;font-weight:700;${u.username===CU?"color:var(--accent2);":""}">${u.username}${u.username===CU?" (You)":""}</div><div style="font-size:11px;color:var(--muted);">🔥 ${u.streak} streak · 🪙 ${u.coins}</div></div><div style="text-align:right;font-weight:700;font-family:'Syne',sans-serif;">⭐ ${u.score}</div></div>`).join("")}</div>`;
+  }catch(e){el.innerHTML=`<p style="color:var(--danger);">Failed to load leaderboard.</p>`;}
+}
+
+// ============================================================
+// PROFILE
+// ============================================================
+async function loadProfile(){
+  if(!CU)return;
+  try{
+    const r=await fetch(`${API}/profile/${CU}`,{headers:hdrs()});const d=await r.json();if(!r.ok)return;
+    document.getElementById("pf-av").textContent=(d.username||CU)[0].toUpperCase();
+    document.getElementById("pf-un").textContent=d.username||CU;
+    document.getElementById("pf-fn").textContent=d.full_name||"";
+    document.getElementById("pf-bio").textContent=d.bio||"";
+    document.getElementById("pf-sc").textContent=d.score||0;
+    document.getElementById("pf-st").textContent=d.streak||0;
+    document.getElementById("pf-co").textContent=d.coins||0;
+    document.getElementById("ep-fn").value=d.full_name||"";
+    document.getElementById("ep-bio").value=d.bio||"";
+    if(d.profile_pic){const av=document.getElementById("pf-av");av.style.backgroundImage=`url(${d.profile_pic})`;av.style.backgroundSize="cover";av.textContent="";}
+    const allR=await fetch(`${API}/badges/all`);const all=await allR.json();
+    const earned=new Set((d.badges||[]).map(b=>b.name));
+    document.getElementById("pf-badges").innerHTML=(all||[]).map(b=>`<div class="badge-card ${earned.has(b.name)?"":"locked"}" title="${b.description}"><div style="font-size:1.8rem;">${b.icon}</div><div style="font-size:10px;margin-top:5px;font-family:'Syne',sans-serif;">${b.name}</div>${!earned.has(b.name)?'<div style="font-size:9px;color:var(--muted);">🔒</div>':""}</div>`).join("");
+    const sr=await fetch(`${API}/quiz/stats/${CU}`,{headers:hdrs()});const sd=await sr.json();document.getElementById("pf-qz").textContent=sd.total_quizzes||0;
+    const hr=await fetch(`${API}/quiz/history/${CU}`,{headers:hdrs()});const hd=await hr.json();
+    document.getElementById("pf-qhist").innerHTML=Array.isArray(hd)&&hd.length>0?hd.slice(0,5).map(r=>`<div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);"><div><div style="font-family:'Syne',sans-serif;font-size:13px;">${r.topic}</div><div style="color:var(--muted);font-size:11px;">${r.subject} · ${r.level}</div></div><div style="text-align:right;"><div style="color:${r.percentage>=60?"var(--accent2)":"var(--danger)"};font-weight:700;">${r.percentage}%</div><div style="color:var(--muted);font-size:11px;">${r.score}/${r.total_questions}</div></div></div>`).join(""):`<p style="color:var(--muted);font-size:13px;">No quizzes yet!</p>`;
+    const shr=await fetch(`${API}/study/history/${CU}`,{headers:hdrs()});const shd=await shr.json();
+    document.getElementById("pf-shist").innerHTML=Array.isArray(shd)&&shd.length>0?shd.slice(0,5).map(s=>`<div style="display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);"><div style="width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:6px;flex-shrink:0;"></div><div><div style="font-size:13px;">Studied <strong>${s.topic}</strong></div><div style="color:var(--muted);font-size:11px;">${s.subject} · ${s.level}</div></div></div>`).join(""):`<p style="color:var(--muted);font-size:13px;">No study sessions yet!</p>`;
+  }catch(e){toast("Could not load profile","error");}
+}
+function toggleEdit(){const f=document.getElementById("edit-form");f.style.display=f.style.display==="none"?"block":"none";}
+async function saveProfile(){
+  try{
+    const r=await fetch(`${API}/profile/update?username=${encodeURIComponent(CU)}`,{method:"POST",headers:hdrs(),body:JSON.stringify({full_name:document.getElementById("ep-fn").value.trim(),bio:document.getElementById("ep-bio").value.trim(),profile_pic:document.getElementById("ep-pic").value.trim()||null})});
+    if(r.ok){toast("Profile updated! ✅","success");toggleEdit();loadProfile();}else{toast("Update failed","error");}
+  }catch(e){toast("Connection error","error");}
+}
+
+// ============================================================
+// NOTIFICATIONS
+// ============================================================
+async function loadNotifCount(){
+  if(!CU)return;
+  try{const r=await fetch(`${API}/notifications/${CU}`,{headers:hdrs()});const d=await r.json();const u=Array.isArray(d)?d.filter(n=>!n.is_read).length:0;const dot=document.getElementById("ndot");if(u>0){dot.textContent=u;dot.style.display="flex";}else{dot.style.display="none";}}catch(e){}
+}
+async function toggleNotif(){
+  const p=document.getElementById("notif-panel");p.classList.toggle("open");
+  if(p.classList.contains("open")){
+    try{const r=await fetch(`${API}/notifications/${CU}`,{headers:hdrs()});const d=await r.json();const el=document.getElementById("notif-list");
+    if(Array.isArray(d)&&d.length>0){el.innerHTML=d.map(n=>`<div onclick="markRead(${n.id})" style="padding:10px;border-bottom:1px solid var(--border);cursor:pointer;background:${n.is_read?"":"rgba(108,99,255,.06)"};border-radius:8px;margin-bottom:5px;"><div style="font-size:13px;line-height:1.5;">${n.message}</div><div style="font-size:10px;color:var(--muted);margin-top:3px;">${timeAgo(n.created_at)}</div></div>`).join("");}
+    else{el.innerHTML=`<p style="color:var(--muted);text-align:center;font-size:13px;padding:20px;">No notifications yet 🔕</p>`;}}catch(e){}
+  }
+}
+async function markRead(id){await fetch(`${API}/notifications/mark-read/${id}`,{method:"POST",headers:hdrs()});loadNotifCount();}
+async function markAllRead(){await fetch(`${API}/notifications/mark-all-read/${CU}`,{method:"POST",headers:hdrs()});loadNotifCount();toggleNotif();toast("All cleared","success");}
+
+// ============================================================
+// PARTICLES
+// ============================================================
+function makeParticles(){
+  const c=document.getElementById("particles");if(!c)return;
+  for(let i=0;i<12;i++){const p=document.createElement("div");p.className="particle";p.style.cssText=`left:${Math.random()*100}vw;width:${Math.random()*8+4}px;height:${Math.random()*8+4}px;animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*10}s;opacity:${Math.random()*.5+.2};`;c.appendChild(p);}
+}
+
+console.log("%cOx-Bridge Learning Hub v2.0 | PWA Ready | Ox-Bridge Technology | Built by Goodnews Solomon","color:#6c63ff;font-size:13px;font-weight:bold;");
+</script>
+</body>
+  </html>
