@@ -1657,56 +1657,15 @@ async function toggleNotif(){
 async function markRead(id){await fetch(`${API}/notifications/mark-read/${id}`,{method:"POST",headers:hdrs()});loadNotifCount();}
 async function markAllRead(){await fetch(`${API}/notifications/mark-all-read/${CU}`,{method:"POST",headers:hdrs()});loadNotifCount();toggleNotif();toast("All cleared","success");}
 
- // ============================================================
+// ============================================================
 // PARTICLES
 // ============================================================
 function makeParticles(){
   const c=document.getElementById("particles");if(!c)return;
-  for(let i=0;i<12;i++){
-    const p=document.createElement("div");
-    p.className="particle";
-    p.style.cssText=`left:${Math.random()*100}vw;width:${Math.random()*8+4}px;height:${Math.random()*8+4}px;animation-delay:${Math.random()*5}s;animation-duration:${Math.random()*15+10}s;`;
-    c.appendChild(p);
-  }
+  for(let i=0;i<12;i++){const p=document.createElement("div");p.className="particle";p.style.cssText=`left:${Math.random()*100}vw;width:${Math.random()*8+4}px;height:${Math.random()*8+4}px;animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*10}s;opacity:${Math.random()*.5+.2};`;c.appendChild(p);}
 }
 
-// ============================================================
-// PWA HANDLER & SERVICE WORKER REGISTRATION
-// ============================================================
-let deferredPrompt;
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then((reg) => console.log('🚀 Ox-Bridge Service Worker Registered Successfully!', reg.scope))
-      .catch((err) => console.error('❌ Service Worker Registration Failed:', err));
-  });
-}
-
-// Capture the Chrome/Edge Install Prompt
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  
-  // Show your custom bottom install banner
-  const banner = document.getElementById('install-banner');
-  if (banner) banner.style.display = 'flex';
-});
-
-// Setup click action for your "Install App" button
-document.getElementById('install-btn')?.addEventListener('click', async () => {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  const { outcome } = await deferredPrompt.userChoice;
-  console.log(`User response to install request: ${outcome}`);
-  deferredPrompt = null;
-  dismissInstall();
-});
-
-function dismissInstall() {
-  const banner = document.getElementById('install-banner');
-  if (banner) banner.style.display = 'none';
-}
+console.log("%cOx-Bridge Learning Hub v2.0 | PWA Ready | Ox-Bridge Technology | Built by Goodnews Solomon","color:#6c63ff;font-size:13px;font-weight:bold;");
 </script>
 </body>
 </html>
